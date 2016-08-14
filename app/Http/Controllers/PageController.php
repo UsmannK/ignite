@@ -9,6 +9,7 @@ use \App\Models\Application;
 use \App\Models\ApplicationRating;
 use Auth;
 use DB;
+use Carbon\Carbon;
 
 class PageController extends Controller {
     /**
@@ -17,13 +18,11 @@ class PageController extends Controller {
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['index']]);
     }
 
     /**
      * Import new records in Excel sheet to database
-     *
-     * @return \Illuminate\Http\Response
      */
     public function importExcel() {
         $excel = [];
@@ -54,26 +53,31 @@ class PageController extends Controller {
         });
     }
 
-    public function index() {
+    public function dashboard() {
         $applications = Application::count();
         $data['count'] = Auth::user()->ratings->count();
-        return view('home', compact('applications', 'data'));
+        return view('dashboard', compact('applications', 'data'));
+    }
+    public function index() {
+        return view('home');
     }
     public function showRate($id  = null) {
         if(is_null($id)) {
             $id = $this->getNextApplicationID();
             // If user has rated all applicants
             if(is_null($id)) {
-                return redirect()->action('PageController@index')->with('message', 'Looks like you\'ve rated everyone. Great job!');
+                return redirect()->action('PageController@dashboard')->with('message', 'Looks like you\'ve rated everyone. Great job!');
             }
             return redirect()->action('PageController@showRate', ['id' => $id]);
         }
         try {
             $application = Application::findOrFail($id);
-            // var_dump($application->ratingInfo());
+            $rating = ApplicationRating::where('application_id', $id)->where('user_id', Auth::user()->id)->first();
+            if($rating) {
+                $rating = $rating->toArray();
+            }
             $data['id'] = $id;
-            // var_dump($application->ratingInfo);
-            return view('rate', compact('application', 'data'));
+            return view('rate', compact('application', 'data', 'rating'));
         } catch (\Exception $e) {
             return redirect('/')->with('message', 'Could not find application.'); 
         }

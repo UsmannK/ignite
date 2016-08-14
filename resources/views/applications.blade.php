@@ -17,6 +17,9 @@
                                     <th>Name</th>
                                     <th>Ratings</th>
                                     <th>Your Score</th>
+                                    @role('admin')
+                                    <th>Average Score</th>
+                                    @endrole
                                 </tr>
                             </thead>
                             <tbody>
@@ -26,6 +29,9 @@
                                         <th>{{ $app->name }}</th>
                                         <th>{{ $app->getReviewsAttribute() }}</th>
                                         <th>{{ $app->userRating()}}</th>
+                                        @role('admin')
+                                        <th>{{ $app->ratingInfo()['average']}}</th>
+                                        @endrole
                                     </tr>
                                 @endforeach
                             </tbody>

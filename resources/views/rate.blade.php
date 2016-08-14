@@ -13,21 +13,29 @@ $(document).keyup(function(e) {
         val = 3;
     }
     if(val && !submitted) {
-        $.ajax({
-            type: 'POST',
-            url: '{{action('PageController@submitRating')}}',
-            data: { "_token": "{{ csrf_token() }}", "rating": val, "app_id": '{{$data['id']}}'},
-            dataType: 'json',
-            success: function(data) {
-                if(data['message'] == "success") {
-                    // Only allow submit once
-                    submitted = true;
-                    window.location.href = data.redirect;
-                }
-            }
-        });
+        submitRating(val);
     }
 });
+$('#rating-group button').click(function() {
+    if(!submitted) {
+        submitRating($(this).attr("value"));
+    }
+});
+function submitRating(value) {
+    $.ajax({
+        type: 'POST',
+        url: '{{action('PageController@submitRating')}}',
+        data: { "_token": "{{ csrf_token() }}", "rating": value, "app_id": '{{$data['id']}}'},
+        dataType: 'json',
+        success: function(data) {
+            if(data['message'] == "success") {
+                // Only allow submit once
+                submitted = true;
+                window.location.href = data.redirect;
+            }
+        }
+    });
+}
 </script>
 @stop
 
@@ -40,14 +48,17 @@ $(document).keyup(function(e) {
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            @if($rating)
+                <div class="alert alert-info"><b>Heads up!</b> You've already rated this application a <b>{{$rating['rating']}}</b>.</div>
+            @endif
             @if(Session::has('message'))
                 <p class="alert alert-info">{{ Session::get('message') }}</p>
             @endif
             <div class="text-center">
-                <div class="btn-group" role="group" aria-label="...">
-                    <button type="button" class="btn btn-default">1</button>
-                    <button type="button" class="btn btn-default">2</button>
-                    <button type="button" class="btn btn-default">3</button>
+                <div class="btn-group" role="group" aria-label="rating" id="rating-group">
+                    <button type="button" class="btn btn-{{$rating['rating'] == 1 ? 'primary' : 'default' }}" value="1">1</button>
+                    <button type="button" class="btn btn-{{$rating['rating'] == 2 ? 'primary' : 'default' }}" value="2">2</button>
+                    <button type="button" class="btn btn-{{$rating['rating'] == 3 ? 'primary' : 'default' }}" value="3">3</button>
                 </div>
             </div>
             <br/>

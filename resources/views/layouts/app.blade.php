@@ -43,7 +43,7 @@
                     </ul>
                 @else
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ url('/home') }}">home</a></li>
+                        <li><a href="{{ url('/dashboard') }}">dashboard</a></li>
                         <li><a href="{{ url('/rate') }}">rate</a></li>
                         <li><a href="{{ url('/applications') }}">all applications</a></li>
                     </ul>
