@@ -45,7 +45,13 @@
                     <ul class="nav navbar-nav">
                         <li><a href="{{ url('/dashboard') }}">dashboard</a></li>
                         <li><a href="{{ url('/rate') }}">rate</a></li>
-                        <li><a href="{{ url('/applications') }}">all applications</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">applications <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url('/applications') }}">all</a></li>
+                                <li><a href="#">accepted</a></li>
+                            </ul>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -53,6 +59,7 @@
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/settings') }}"><i class="fa fa-btn fa-cogs"></i>Settings</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>

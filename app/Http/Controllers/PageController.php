@@ -112,4 +112,22 @@ class PageController extends Controller {
         $applications = Application::paginate(25);
         return view('applications', ['applications' => $applications]);
     }
+    public function showSettings() {
+        return view('settings');
+    }
+    public function submitSettings(Request $request) {
+        $validator = \Validator::make($request->all(), [
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $user = Auth::user();
+        if($request->enable_keyboard) {
+            $user->enable_keyboard = 1;
+        } else {
+            $user->enable_keyboard = 0;
+        }
+        $user->save();
+         return response()->json(['message' => 'success']);
+    }
 }

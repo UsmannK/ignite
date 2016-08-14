@@ -11,12 +11,13 @@
 |
 */
 Route::auth();
-Route::get('/dashboard', 'PageController@dashboard');
 Route::get('/', 'PageController@index');
+Route::get('/dashboard', 'PageController@dashboard');
 Route::get('rate/{id?}', 'PageController@showRate');
 Route::post('submitRating', 'PageController@submitRating');
 Route::get('applications', 'PageController@showApplications');
-
+Route::get('settings', 'PageController@showSettings');
+Route::post('settings', 'PageController@submitSettings');
 Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
 	Route::get('import', 'PageController@importExcel');
 });

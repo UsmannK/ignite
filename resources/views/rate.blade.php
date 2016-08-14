@@ -3,6 +3,7 @@
 @section('bottom_js')
 <script>
 var submitted = false;
+@if(Auth::user()->enable_keyboard)
 $(document).keyup(function(e) {
     var val;
     if(e.keyCode == 97 || e.keyCode == 49) {
@@ -16,6 +17,7 @@ $(document).keyup(function(e) {
         submitRating(val);
     }
 });
+@endif
 $('#rating-group button').click(function() {
     if(!submitted) {
         submitRating($(this).attr("value"));
@@ -29,7 +31,7 @@ function submitRating(value) {
         dataType: 'json',
         success: function(data) {
             if(data['message'] == "success") {
-                // Only allow submit once
+                $('<div class="modal-backdrop" style="background:#fff"></div>').appendTo(document.body).hide().fadeIn();
                 submitted = true;
                 window.location.href = data.redirect;
             }
@@ -83,7 +85,12 @@ function submitRating(value) {
                         {{$application['q5']}}
                     <hr/>                                                    
                         <b>What would your ideal mentor be like?</b><br/>
-                        {{$application['q6']}}                
+                        {{$application['q6']}}
+                    @role('admin')
+                        <hr/>
+                         <div class="btn btn-danger btn-lg text-left">Reject</div>
+                        <div class="btn btn-success btn-lg text-right">Accept</div>
+                    @endrole
                 </div>
             </div>
         </div>
