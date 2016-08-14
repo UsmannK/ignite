@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 class Application extends Model {
 	protected $fillable = array('uuid', 'name');
 
@@ -36,12 +37,17 @@ class Application extends Model {
 	/**
     * Determine number of times the application has been reviewed
     */
-    public function getReviewsAttribute()
-    {
+    public function getReviewsAttribute() {
         return ApplicationRating::where('application_id',$this->id)->get()->count();
     }
-    public function ratings()
-    {
+    public function ratings() {
         return $this->hasMany('App\Models\ApplicationRating');
+    }
+    public function userRating() {
+        $rating = ApplicationRating::where('application_id',$this->id)->where('user_id', Auth::user()->id)->first();
+        if($rating) {
+            return $rating->rating;
+        }
+        return "Not rated";
     }
 }

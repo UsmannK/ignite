@@ -45,7 +45,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="{{ url('/home') }}">home</a></li>
                         <li><a href="{{ url('/rate') }}">rate</a></li>
-                        <li><a href="{{ url('/applications') }}">applications</a></li>
+                        <li><a href="{{ url('/applications') }}">all applications</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">

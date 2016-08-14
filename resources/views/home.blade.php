@@ -15,6 +15,23 @@
                         You've rated {{$data['count']}} {{str_plural('application', $data['count'])}}, {{$applications-$data['count']}} to go!
                         <hr/>
                         Leaderboard:
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Name</th>
+                                        <th>Ratings</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                    </tr>
+                                </tbody>
+
+                            </table>
                     </div>
             </div>
         </div>

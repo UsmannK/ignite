@@ -8,7 +8,7 @@
                 <p class="alert alert-info">{{ Session::get('message') }}</p>
             @endif        
             <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+                <div class="panel-heading">All Applications</div>
                     <div class="panel-body">
                         <table class="table table-bordered">
                             <thead>
@@ -16,7 +16,7 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Ratings</th>
-                                    <th>Average Score</th>
+                                    <th>Your Score</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -25,7 +25,7 @@
                                         <th><a href="{{action('PageController@showRate', ['id' => $app->id])}}">{{$app->id}}</a>
                                         <th>{{ $app->name }}</th>
                                         <th>{{ $app->getReviewsAttribute() }}</th>
-                                        <th>{{ $app->ratingInfo()['average']}}</th>
+                                        <th>{{ $app->userRating()}}</th>
                                     </tr>
                                 @endforeach
                             </tbody>
