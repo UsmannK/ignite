@@ -1,5 +1,36 @@
 @extends('layouts.app')
 
+@section('bottom_js')
+<script>
+var submitted = false;
+$(document).keyup(function(e) {
+    var val;
+    if(e.keyCode == 97 || e.keyCode == 49) {
+        val = 1;
+    } else if(e.keyCode == 98 || e.keyCode == 50) {
+        val = 2;
+    } else if(e.keyCode == 99 || e.keyCode == 51) {
+        val = 3;
+    }
+    if(val && !submitted) {
+        $.ajax({
+            type: 'POST',
+            url: '{{action('PageController@submitRating')}}',
+            data: { "_token": "{{ csrf_token() }}", "rating": val, "app_id": '{{$data['id']}}'},
+            dataType: 'json',
+            success: function(data) {
+                if(data['message'] == "success") {
+                    // Only allow submit once
+                    submitted = true;
+                    window.location.href = data.redirect;
+                }
+            }
+        });
+    }
+});
+</script>
+@stop
+
 @section('content')
 <style>
     .panel-body {
@@ -11,7 +42,15 @@
         <div class="col-md-12">
             @if(Session::has('message'))
                 <p class="alert alert-info">{{ Session::get('message') }}</p>
-            @endif        
+            @endif
+            <div class="text-center">
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default">1</button>
+                    <button type="button" class="btn btn-default">2</button>
+                    <button type="button" class="btn btn-default">3</button>
+                </div>
+            </div>
+            <br/>
             <div class="panel panel-default">
                 <div class="panel-heading">Viewing: {{$application['name']}}</div>
                 <div class="panel-body">

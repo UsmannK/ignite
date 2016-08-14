@@ -9,7 +9,6 @@ use \App\Models\Application;
 use \App\Models\ApplicationRating;
 use Auth;
 use DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 
 class PageController extends Controller {
     /**
@@ -43,11 +42,6 @@ class PageController extends Controller {
 
                 $excel[] = $rowData[0];
                 $application = Application::firstOrNew(['uuid' => $rowData[0][0], 'name' => $rowData[0][1]]);
-                // if($application->exists) {
-                //    echo "skipped: " . $row . "<br/>";
-                // } else {
-                //    echo "added: " . $row . "<br/>";
-                // }
                 $application->email = $rowData[0][2];
                 $application->q1 = $rowData[0][3];
                 $application->q2 = $rowData[0][4];
@@ -62,19 +56,42 @@ class PageController extends Controller {
 
     public function index() {
         $applications = Application::count();
-        // $this->getNextApplicationID();
-        return view('home', compact('applications'));
+        $data['count'] = Auth::user()->ratings->count();
+        return view('home', compact('applications', 'data'));
     }
     public function showRate($id  = null) {
         if(is_null($id)) {
-            return redirect()->action('PageController@showRate', ['id' => $this->getNextApplicationID()]);
+            $id = $this->getNextApplicationID();
+            // If user has rated all applicants
+            if(is_null($id)) {
+                return redirect()->action('PageController@index')->with('message', 'Looks like you\'ve rated everyone. Great job!');
+            }
+            return redirect()->action('PageController@showRate', ['id' => $id]);
         }
         try {
-            $application = Application::findOrFail($id)->toArray();
-            return view('rate', compact('application'));
+            $application = Application::findOrFail($id);
+            // var_dump($application->ratingInfo());
+            $data['id'] = $id;
+            // var_dump($application->ratingInfo);
+            return view('rate', compact('application', 'data'));
         } catch (\Exception $e) {
             return redirect('/')->with('message', 'Could not find application.'); 
         }
+    }
+    public function submitRating(Request $request) {
+        $validator = \Validator::make($request->all(), [
+            'app_id' => 'required|exists:applications,id',
+            'rating' => 'required|numeric|max:3|min:1',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $rating = ApplicationRating::firstOrNew(['application_id' => $request->app_id, 'user_id' => Auth::user()->id]);
+        $rating->application_id = $request->app_id;
+        $rating->user_id = Auth::user()->id;
+        $rating->rating = $request->rating;
+        $rating->save();
+        return response()->json(['message' => 'success', 'redirect' => action('PageController@showRate', ['id' => $this->getNextApplicationID()])]);
     }
     public function getNextApplicationID() {
         $user = Auth::user();
@@ -86,5 +103,9 @@ class PageController extends Controller {
             }
             return null;
         }
+    }
+    public function showApplications() {
+        $applications = Application::paginate(25);
+        return view('applications', ['applications' => $applications]);
     }
 }

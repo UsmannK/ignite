@@ -40,4 +40,8 @@ class Application extends Model {
     {
         return ApplicationRating::where('application_id',$this->id)->get()->count();
     }
+    public function ratings()
+    {
+        return $this->hasMany('App\Models\ApplicationRating');
+    }
 }

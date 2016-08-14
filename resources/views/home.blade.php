@@ -12,7 +12,7 @@
                     <div class="panel-body">
                         There are currently <b>{{$applications}}</b> applications.
                         <hr/>
-                        You've rated #, # to go!
+                        You've rated {{$data['count']}} {{str_plural('application', $data['count'])}}, {{$applications-$data['count']}} to go!
                         <hr/>
                         Leaderboard:
                     </div>
