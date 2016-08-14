@@ -5,17 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use \Excel;
-use App\Models\Application;
+use \App\Models\Application;
+use \App\Models\ApplicationRating;
+use Auth;
+use DB;
+use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 
-class PageController extends Controller
-{
+class PageController extends Controller {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
     }
 
@@ -24,8 +26,7 @@ class PageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function importExcel()
-    {
+    public function importExcel() {
         $excel = [];
         Excel::load('resources/report.xlsx', function($reader) use (&$excel) {
             $objExcel = $reader->getExcel();
@@ -41,7 +42,7 @@ class PageController extends Controller
                     NULL, TRUE, FALSE);
 
                 $excel[] = $rowData[0];
-                $application = \App\Models\Application::firstOrNew(['uuid' => $rowData[0][0], 'name' => $rowData[0][1]]);
+                $application = Application::firstOrNew(['uuid' => $rowData[0][0], 'name' => $rowData[0][1]]);
                 // if($application->exists) {
                 //    echo "skipped: " . $row . "<br/>";
                 // } else {
@@ -60,6 +61,30 @@ class PageController extends Controller
     }
 
     public function index() {
-        return view('home');
+        $applications = Application::count();
+        // $this->getNextApplicationID();
+        return view('home', compact('applications'));
+    }
+    public function showRate($id  = null) {
+        if(is_null($id)) {
+            return redirect()->action('PageController@showRate', ['id' => $this->getNextApplicationID()]);
+        }
+        try {
+            $application = Application::findOrFail($id)->toArray();
+            return view('rate', compact('application'));
+        } catch (\Exception $e) {
+            return redirect('/')->with('message', 'Could not find application.'); 
+        }
+    }
+    public function getNextApplicationID() {
+        $user = Auth::user();
+        foreach(Application::orderBy(DB::raw('RAND()'))->get() as $app) {
+            if($app->reviews < 3) {
+                if(!ApplicationRating::where('application_id',$app->id)->where('user_id',$user->id)->first()) {
+                    return($app->id);
+                }
+            }
+            return null;
+        }
     }
 }

@@ -13,3 +13,4 @@
 Route::auth();
 Route::get('/home', 'PageController@index');
 Route::get('/', 'PageController@index');
+Route::get('/rate/{id?}', 'PageController@showRate');
