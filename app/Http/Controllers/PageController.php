@@ -8,6 +8,7 @@ use \Excel;
 use \App\Models\Application;
 use \App\Models\ApplicationRating;
 use \App\Models\InterviewSlot;
+use \App\Models\Interview;
 use Auth;
 use DB;
 use Carbon\Carbon;
@@ -186,10 +187,29 @@ class PageController extends Controller {
     public function showInterview($id = null) {
         try {
             $application = Application::findOrFail($id);
-            return view('interview', compact('application'));
+            $interview = Interview::find($id);
+            if(!is_null($interview))
+            	$interview = $interview->toArray();
+            return view('interview', compact('application', 'interview'));
         } catch (\Exception $e) {
             return redirect('/')->with('message', 'Could not find application.'); 
         }        
+    }
+    public function updateInterview(Request $request) {
+        $validator = \Validator::make($request->all(), [
+            'app_id' => 'required|exists:applications,id',
+            'notes' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $interview = Interview::firstOrNew(['app_id' => $request->app_id, 'user_id' => Auth::user()->id]);
+        $interview->app_id = $request->app_id;
+        $interview->user_id = Auth::user()->id;
+        $interview->notes = $request->notes;
+        $interview->save();
+        $updated_at = new Carbon($interview->updated_at);
+    	return response()->json(['message' => 'success', 'updated_at' => $updated_at->format('g:i:s A')]);
     }
     public function showAllInterviews() {
         $interviews = InterviewSlot::all();

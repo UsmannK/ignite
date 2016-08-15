@@ -24,6 +24,7 @@ Route::get('interview/create', 'PageController@showCreateInterview');
 Route::post('interview/create', 'PageController@submitCreateInterview');
 Route::get('interview/view', 'PageController@showAllInterviews');
 Route::post('applications/submitTimeSlot', 'PageController@submitTimeslot');
+Route::post('interview/update', 'PageController@updateInterview');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
 	Route::get('import', 'PageController@importExcel');

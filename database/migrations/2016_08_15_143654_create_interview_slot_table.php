@@ -27,6 +27,6 @@ class CreateInterviewSlotTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('interview_slot');
     }
 }
