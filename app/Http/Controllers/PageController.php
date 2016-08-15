@@ -110,7 +110,7 @@ class PageController extends Controller {
         return null;
     }
     public function showApplications() {
-          return view('applications');
+        return view('applications');
     }
     public function getApplications() {
         // $applications = Application::with('ratings')->select('application_rating.*');
@@ -143,5 +143,8 @@ class PageController extends Controller {
         }
         $user->save();
          return response()->json(['message' => 'success']);
+    }
+    public function showInterview() {
+
     }
 }

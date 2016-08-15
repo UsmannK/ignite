@@ -4,7 +4,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js"></script>
 <script>
 $(function() {
-    $('#applications-table').DataTable({
+    var table = $('#applications-table').DataTable({
         processing: true,
         serverSide: true,
         ajax: '{!! route('datatables.data') !!}',
@@ -14,7 +14,30 @@ $(function() {
             { data: 'email', name: 'email' },
             { data: 'reviews', name: 'ratings',searchable: false},
             { data: 'UserRating', name: 'myrating',searchable: false},
-            { data: 'avg', name: 'avg',searchable: false}
+            @role('admin')
+            { data: 'avg', name: 'avg',searchable: false},
+            @endrole()
+            {
+                "className":'interview',
+                "orderable":      false,
+                "searchable":      false,
+                "data":           null,
+                "defaultContent": 'Interview &raquo;'
+            }
+        ],
+        "aoColumnDefs": [
+            {
+                "aTargets": [0], // Column to target
+                "mRender": function ( data, type, full ) {
+                    return '<a href="{{action('PageController@showRate')}}/' + data + '">' + data + '</a>';
+                }
+            },
+            {
+                "aTargets": [6], // Column to target
+                "mRender": function ( data, type, full ) {
+                    return '<a href="{{action('PageController@showInterview')}}/' + full['id'] + '">Interview &raquo;</a>';
+                }             
+            }
         ]
     });
 });
@@ -43,6 +66,7 @@ $(function() {
                                     @role('admin')
                                     <th>Average Rating</th>
                                     @endrole()
+                                    <th>Interview</th>
                                 </tr>
                             </thead>
                         </table>
