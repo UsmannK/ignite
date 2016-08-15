@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use \Excel;
 use \App\Models\Application;
 use \App\Models\ApplicationRating;
+use \App\Models\InterviewSlot;
 use Auth;
 use DB;
 use Carbon\Carbon;
@@ -142,9 +143,53 @@ class PageController extends Controller {
             $user->enable_keyboard = 0;
         }
         $user->save();
-         return response()->json(['message' => 'success']);
+        return response()->json(['message' => 'success']);
     }
-    public function showInterview() {
+    public function showCreateInterview() {
+        return view('interview_create');
+    }
+    public function submitCreateInterview(Request $request) {
+        $validator = \Validator::make($request->all(), [
+            'start_day' => 'required|date_format:"d/m/Y"',
+            'end_day' => 'required|date_format:"d/m/Y"',
+            'start_time' => 'required|numeric',
+            'end_time' => 'required|numeric',
+            'increment' => 'required|numeric|min:0',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $currDay = new Carbon($request->start_day);
+        $endDay = new Carbon($request->end_day);
 
+        while($currDay <= $endDay) {
+            $currTime = $currDay->copy();
+            $currTime->addHours($request->start_time);
+
+            $endTime = $currDay->copy();
+            $endTime->addHours($request->end_time);
+         
+            while($currTime <= $endTime) {
+                $interview = new InterviewSlot;
+                $interview->start_time = $currTime;
+                $interview->end_time = $currTime->copy()->addMinutes($request->increment);
+                $interview->save();
+                $currTime->addMinutes($request->increment);
+            }
+            $currDay->addDays(1);
+        }
+        return response()->json(['message' => 'success']);
+    }
+    public function showInterview($id = null) {
+        try {
+            $application = Application::findOrFail($id);
+            return view('interview', compact('application'));
+        } catch (\Exception $e) {
+            return redirect('/')->with('message', 'Could not find application.'); 
+        }        
+    }
+    public function showAllInterviews() {
+        $interviews = InterviewSlot::all();
+        return view('interview_view', compact('interviews'));
     }
 }

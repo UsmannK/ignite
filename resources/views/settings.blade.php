@@ -8,7 +8,7 @@ $(document).ready(function() {
         $.ajax({
             type: 'POST',
             url: '{{action('PageController@submitSettings')}}',
-            data: $("#settingsForm").serialize(),
+            data: $(this).serialize(),
             dataType: 'json',
             success: function(data) {
                 if(data['message'] == 'success') {
