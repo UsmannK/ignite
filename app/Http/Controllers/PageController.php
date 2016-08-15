@@ -81,7 +81,10 @@ class PageController extends Controller {
             }
             $data['id'] = $id;
             $slots = InterviewSlot::all();
-            return view('rate', compact('application', 'data', 'rating', 'slots'));
+            if(($interviews = Interview::where('app_id', $id)->get()) != null) {
+            	$interviews = $interviews->toArray();
+            }
+            return view('rate', compact('application', 'data', 'rating', 'slots', 'interviews'));
         } catch (\Exception $e) {
             return redirect('/')->with('message', 'Could not find application.'); 
         }

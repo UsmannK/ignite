@@ -137,7 +137,29 @@ $('#timeslotForm').submit(function(event) {
                         </form>
                         <hr/>
                     @endrole
+                    @if($interviews)
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        Mentor Interviews:<br/><br/>
+                        @for ($i = 0; $i < count($interviews); $i++)
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$i}}">
+                                            {{$interviews[$i]['author']}}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse-{{$i}}" class="panel-collapse collapse" role="tabpanel">
+                                    <div class="panel-body">
+                                        {!!$interviews[$i]['notes']!!}
+                                    </div>
+                                </div>
+                            </div>
+                        @endfor
+                        </div>
+                    @else
                     <div class="alert alert-warning">No Interview data yet!</div>
+                    @endif
                 </div>
             </div>
         </div>
