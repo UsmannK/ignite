@@ -147,6 +147,8 @@ class PageController extends Controller {
         return response()->json(['message' => 'success']);
     }
     public function showCreateInterview() {
+    	if(!Auth::user()->hasRole('admin'))
+    		return redirect('/')->with('message', 'Invalid Permissions.');
         return view('interview_create');
     }
     public function submitCreateInterview(Request $request) {
@@ -195,7 +197,7 @@ class PageController extends Controller {
     }
     public function submitTimeslot(Request $request) {
         if(!Auth::user()->hasRole('admin'))
-            return;
+        	return redirect('/')->with('message', 'Invalid Permissions.');
 
         $validator = \Validator::make($request->all(), [
             'id' => 'required|exists:applications,id',

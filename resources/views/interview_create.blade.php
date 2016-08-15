@@ -33,7 +33,7 @@ $(document).ready(function() {
                 <div class="panel-heading">Create Interview Timeslot</div>
                 <div class="panel-body">
                     <div id="message"></div>
-                    <div class="alert alert-danger">Do not use this functionality without knowing what you are doing!</div>
+                    <div class="alert alert-danger"><b>Warning!</b> Only use this functionality if you know what you're doing!</div>
                     <form id="interviewForm">
                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                         <div class="form-group">

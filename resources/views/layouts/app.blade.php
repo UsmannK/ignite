@@ -49,7 +49,9 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">interview<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
+                                @role('admin')
                                 <li><a href="{{action('PageController@showCreateInterview')}}">create interview time</a></li>
+                                @endrole()
                                 <li><a href="{{action('PageController@showAllInterviews')}}">view interviews</a></li>
                             </ul>
                         </li>

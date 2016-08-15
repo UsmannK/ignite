@@ -22,8 +22,8 @@
                         <tbody>
                         @foreach($interviews as $interview)
                             <tr>
-                                <td>{{$interview['start_time']}}</td>
-                                <td>{{$interview['end_time']}}</td>
+                                <td>{{$interview->formattedStartTime}}</td>
+                                <td>{{$interview->formattedEndTime}}</td>
                                 <td>{{$interview['location'] == '' ? 'TBA' : $interview['location']}}</td>
                                 <td>{{$interview->applications}}</td>
                             </tr>

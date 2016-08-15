@@ -126,9 +126,9 @@ $('#timeslotForm').submit(function(event) {
                                     @endif
                                     @foreach($slots as $slot)
                                         @if($slot['id'] == $application['interview_timeslot'])
-                                            <option value="{{$slot['id']}}" selected>{{$slot['start_time']}}</option>
+                                            <option value="{{$slot['id']}}" selected>{{$slot->formattedStartTime}}</option>
                                         @else
-                                            <option value="{{$slot['id']}}">{{$slot['start_time']}}</option>
+                                            <option value="{{$slot['id']}}">{{$slot->formattedStartTime}}</option>
                                         @endif
                                     @endforeach
                                 </select>
