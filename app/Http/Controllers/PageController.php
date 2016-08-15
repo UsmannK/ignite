@@ -10,6 +10,7 @@ use \App\Models\ApplicationRating;
 use Auth;
 use DB;
 use Carbon\Carbon;
+use Datatables;
 
 class PageController extends Controller {
     /**
@@ -105,12 +106,26 @@ class PageController extends Controller {
                     return($app->id);
                 }
             }
-            return null;
         }
+        return null;
     }
     public function showApplications() {
         $applications = Application::paginate(25);
         return view('applications', ['applications' => $applications]);
+    }
+    public function getApplications() {
+        // $applications = Application::with('ratings')->select('application_rating.*');
+        $applications = Application::select([
+            'applications.id',
+            'applications.name',
+            'applications.email',
+            \DB::raw('count(application_ratings.application_id) as ratings'),
+            \DB::raw('application_ratings.rating as myrating'),
+        ])->leftJoin('application_ratings','application_ratings.application_id','=','applications.id')
+        ->groupBy('applications.id');
+
+
+        return Datatables::of($applications)->make(true);
     }
     public function showSettings() {
         return view('settings');

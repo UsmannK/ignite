@@ -33,12 +33,19 @@ class Application extends Model {
             "average"=>$avg
         ];
     }
-	protected $appends = ['reviews'];
+	protected $appends = ['reviews', 'UserRating'];
 	/**
     * Determine number of times the application has been reviewed
     */
     public function getReviewsAttribute() {
         return ApplicationRating::where('application_id',$this->id)->get()->count();
+    }
+    public function getUserRatingAttribute() {
+        $rating = ApplicationRating::where('application_id',$this->id)->where('user_id', Auth::user()->id)->first();
+        if($rating) {
+            return $rating->rating;
+        }
+        return "Not rated";
     }
     public function ratings() {
         return $this->hasMany('App\Models\ApplicationRating');

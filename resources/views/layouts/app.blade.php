@@ -52,6 +52,7 @@
                                 <li><a href="#">accepted</a></li>
                             </ul>
                         </li>
+                        <li><a href="{{ url('/interview') }}">interview</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">

@@ -49,7 +49,7 @@ function submitRating(value) {
 </style>
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-7">
             @if($rating)
                 <div class="alert alert-info"><b>Heads up!</b> You've already rated this application a <b>{{$rating['rating']}}</b>.</div>
             @endif
@@ -65,7 +65,7 @@ function submitRating(value) {
             </div>
             <br/>
             <div class="panel panel-default">
-                <div class="panel-heading">Viewing: {{$application['name']}}</div>
+                <div class="panel-heading">Application</div>
                 <div class="panel-body">
                    <h1 style="margin-top: 0px;">{{$application['name']}} <small>({{$application['email']}})</small></h1>
                    <hr/>
@@ -91,6 +91,14 @@ function submitRating(value) {
                          <div class="btn btn-danger btn-lg text-left">Reject</div>
                         <div class="btn btn-success btn-lg text-right">Accept</div>
                     @endrole
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">Interview</div>
+                <div class="panel-body">
+                    <div class="alert alert-warning">No Interview data yet!</div>
                 </div>
             </div>
         </div>

@@ -21,3 +21,6 @@ Route::post('settings', 'PageController@submitSettings');
 Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
 	Route::get('import', 'PageController@importExcel');
 });
+Route::controller('datatables', 'PageController', [
+    'getApplications'  => 'datatables.data'
+]);
