@@ -13,7 +13,8 @@ $(function() {
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
             { data: 'reviews', name: 'ratings',searchable: false},
-            { data: 'UserRating', name: 'myrating',searchable: false}
+            { data: 'UserRating', name: 'myrating',searchable: false},
+            { data: 'avg', name: 'avg',searchable: false}
         ]
     });
 });
@@ -39,6 +40,9 @@ $(function() {
                                     <th>Email</th>
                                     <th>Ratings</th>
                                     <th>My Rating</th>
+                                    @role('admin')
+                                    <th>Average Rating</th>
+                                    @endrole()
                                 </tr>
                             </thead>
                         </table>

@@ -110,8 +110,7 @@ class PageController extends Controller {
         return null;
     }
     public function showApplications() {
-        $applications = Application::paginate(25);
-        return view('applications', ['applications' => $applications]);
+          return view('applications');
     }
     public function getApplications() {
         // $applications = Application::with('ratings')->select('application_rating.*');
@@ -120,10 +119,10 @@ class PageController extends Controller {
             'applications.name',
             'applications.email',
             \DB::raw('count(application_ratings.application_id) as ratings'),
+            \DB::raw('AVG(application_ratings.rating) as avg'),
             \DB::raw('application_ratings.rating as myrating'),
         ])->leftJoin('application_ratings','application_ratings.application_id','=','applications.id')
         ->groupBy('applications.id');
-
 
         return Datatables::of($applications)->make(true);
     }
