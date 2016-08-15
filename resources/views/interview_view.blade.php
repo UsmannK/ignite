@@ -25,7 +25,7 @@
                                 <td>{{$interview['start_time']}}</td>
                                 <td>{{$interview['end_time']}}</td>
                                 <td>{{$interview['location'] == '' ? 'TBA' : $interview['location']}}</td>
-                                <td></td>
+                                <td>{{$interview->applications}}</td>
                             </tr>
                         @endforeach
                 </div>
