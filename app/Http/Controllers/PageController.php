@@ -79,7 +79,8 @@ class PageController extends Controller {
                 $rating = $rating->toArray();
             }
             $data['id'] = $id;
-            return view('rate', compact('application', 'data', 'rating'));
+            $slots = InterviewSlot::all();
+            return view('rate', compact('application', 'data', 'rating', 'slots'));
         } catch (\Exception $e) {
             return redirect('/')->with('message', 'Could not find application.'); 
         }
@@ -191,5 +192,21 @@ class PageController extends Controller {
     public function showAllInterviews() {
         $interviews = InterviewSlot::all();
         return view('interview_view', compact('interviews'));
+    }
+    public function submitTimeslot(Request $request) {
+        if(!Auth::user()->hasRole('admin'))
+            return;
+
+        $validator = \Validator::make($request->all(), [
+            'id' => 'required|exists:applications,id',
+            'timeslot' => 'required|exists:interview_slot,id',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $application = Application::find($request->id);
+        $application->interview_timeslot = $request->timeslot;
+        $application->save();
+        return response()->json(['message' => 'success']);
     }
 }

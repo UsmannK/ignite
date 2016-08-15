@@ -16,7 +16,7 @@
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Location</th>
-                                <th># of Students</th>
+                                <th>Students</th>
                             </tr>
                         </thead>
                         <tbody>

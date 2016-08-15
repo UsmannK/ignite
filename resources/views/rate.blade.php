@@ -38,6 +38,21 @@ function submitRating(value) {
         }
     });
 }
+$('#timeslotForm').submit(function(event) {
+    $.ajax({
+        type: 'POST',
+        url: '{{action('PageController@submitTimeslot')}}',
+        data: $(this).serialize(),
+        dataType: 'json',
+        success: function(data) {
+            if(data['message'] == 'success') {
+                console.log('success');
+                 $("#message").fadeIn().addClass("alert alert-success").html("Successfully assigned interview slot.");
+            }
+        }
+    });
+    event.preventDefault();
+});
 </script>
 @stop
 
@@ -98,6 +113,30 @@ function submitRating(value) {
             <div class="panel panel-default">
                 <div class="panel-heading">Interview</div>
                 <div class="panel-body">
+                    @role('admin')
+                        <div id="message"></div>
+                        <form id="timeslotForm">
+                            <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                             <input type="hidden" name="id" value="{{$application['id']}}" />
+                            <div class="form-group">
+                                <label for="inputTimeslot">Assign Interview Timeslot</label>
+                                <select class="form-control" name="timeslot">
+                                    @if($application['interview_timeslot'] == 0)
+                                        <option selected disabled>Please select a slot</option>
+                                    @endif
+                                    @foreach($slots as $slot)
+                                        @if($slot['id'] == $application['interview_timeslot'])
+                                            <option value="{{$slot['id']}}" selected>{{$slot['start_time']}}</option>
+                                        @else
+                                            <option value="{{$slot['id']}}">{{$slot['start_time']}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                        <hr/>
+                    @endrole
                     <div class="alert alert-warning">No Interview data yet!</div>
                 </div>
             </div>

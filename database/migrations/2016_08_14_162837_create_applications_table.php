@@ -23,6 +23,7 @@ class CreateApplicationsTable extends Migration
             $table->text('q4');
             $table->text('q5');
             $table->text('q6');
+            $table->integer('interview_timeslot');
             $table->timestamps();
         });
     }
