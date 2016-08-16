@@ -38,12 +38,10 @@ class PageController extends Controller {
             $highestColumn = $sheet->getHighestColumn();
 
             //  Loop through each row of the worksheet in turn
-            for ($row = 3; $row <= $highestRow; $row++)
-            {
+            for ($row = 3; $row <= $highestRow; $row++) {
                 //  Read a row of data into an array
                 $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
                     NULL, TRUE, FALSE);
-
                 $excel[] = $rowData[0];
                 $application = Application::firstOrNew(['uuid' => $rowData[0][0], 'name' => $rowData[0][1]]);
                 $application->email = $rowData[0][2];
@@ -58,10 +56,13 @@ class PageController extends Controller {
         });
     }
 
+    /**
+    * Display mentor dashboard
+    */
     public function dashboard() {
         $applications = Application::count();
         $data['count'] = Auth::user()->ratings->count();
-        return view('dashboard', compact('applications', 'data'));
+        return view('dashboard.dashboard', compact('applications', 'data'));
     }
     public function index() {
         return view('home');
@@ -86,7 +87,7 @@ class PageController extends Controller {
             if(($interviews = Interview::where('app_id', $id)->get()) != null) {
             	$interviews = $interviews->toArray();
             }
-            return view('rate', compact('application', 'data', 'rating', 'slots', 'interviews'));
+            return view('dashboard.rate', compact('application', 'data', 'rating', 'slots', 'interviews'));
         } catch (\Exception $e) {
             return redirect('/')->with('message', 'Could not find application.'); 
         }
@@ -118,10 +119,13 @@ class PageController extends Controller {
         return null;
     }
     public function showApplications() {
-        return view('applications');
+        return view('dashboard.applications');
     }
+
+    /**
+    * Retrieve data for DataTables
+    */
     public function getApplications() {
-        // $applications = Application::with('ratings')->select('application_rating.*');
         $applications = Application::select([
             'applications.id',
             'applications.name',
@@ -136,10 +140,10 @@ class PageController extends Controller {
         return Datatables::of($applications)->make(true);
     }
     public function showSettings() {
-        return view('settings');
+        return view('dashboard.settings');
     }
     public function showSettingsPicture() {
-        return view('settings_picture');
+        return view('dashboard.settings_picture');
     }
     public function submitSettings(Request $request) {
         $validator = \Validator::make($request->all(), [
@@ -160,9 +164,7 @@ class PageController extends Controller {
         return response()->json(['message' => 'success']);
     }
     public function showCreateInterview() {
-    	if(!Auth::user()->hasRole('admin'))
-    		return redirect('/')->with('message', 'Invalid Permissions.');
-        return view('interview_create');
+        return view('dashboard.interview_create');
     }
     public function submitCreateInterview(Request $request) {
         $validator = \Validator::make($request->all(), [
@@ -202,7 +204,7 @@ class PageController extends Controller {
             $interview = Interview::find($id);
             if(!is_null($interview))
             	$interview = $interview->toArray();
-            return view('interview', compact('application', 'interview'));
+            return view('dashboard.interview', compact('application', 'interview'));
         } catch (\Exception $e) {
             return redirect('/')->with('message', 'Could not find application.'); 
         }        
@@ -225,7 +227,7 @@ class PageController extends Controller {
     }
     public function showAllInterviews() {
         $interviews = InterviewSlot::all();
-        return view('interview_view', compact('interviews'));
+        return view('dashboard.interview_view', compact('interviews'));
     }
     public function submitTimeslot(Request $request) {
         if(!Auth::user()->hasRole('admin'))
