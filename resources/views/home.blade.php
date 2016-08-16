@@ -1,4 +1,4 @@
-<!DOCTYPE HTML> {{-- Add Calendar --}}
+<!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
     <head>
         <title>Ignite</title>
@@ -6,31 +6,17 @@
         <meta name="description" content="Ignite connects talented upperclassmen at Purdue University with motivated freshmen, who we know will shape the future." />
         <meta name="keywords" content="Ignite, Purdue, Computer, Science, Ignite The Flame, ignitetheflame, Purdue Hackers, Hackers, Boilermake, Mentorship, Mentor, Mentee" />
         <meta property="og:image" content="{{ asset('SPA_assets/images/logo/logo_square.png') }}" />
-
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!--[if lte IE 8]><script src="{{ asset('SPA_assets/js/ie/html5shiv.js') }}"></script><![endif]-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ asset('SPA_assets/css/main.css?ver=1') }}" />
         <!--[if lte IE 8]><link rel="stylesheet" href="{{ asset('SPA_assets/css/ie8.css') }}" /><![endif]-->
         <!--[if lte IE 9]><link rel="stylesheet" href="{{ asset('SPA_assets/css/ie9.css') }}" /><![endif]-->
-
-
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> {{-- jQuery UI CSS --}}
         <link rel="stylesheet" href="{{ asset('SPA_assets/css/ignite.css?ver=1') }}" />
-        
-        <!-- Google Analytics -->
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-            
-            ga('create', 'UA-15660382-9', 'auto');
-            ga('send', 'pageview');
-        </script>
+        <link rel="stylesheet" href="{{ asset('SPA_assets/css/modal.min.css') }}" />
     </head>
     <body {!! Route::currentRouteAction()=="App\Http\Controllers\PageController@index"?'class="landing"':'' !!}>
-
         <!-- Header -->
         @if(Route::currentRouteAction()=="App\Http\Controllers\PageController@index")
             <header id="header" class="alt">
@@ -154,7 +140,30 @@
             <hr>
         </header>
         <div class="row">
-
+            <?php $count = 0; ?>
+            @foreach($mentors as $mentor)
+                <?php $count++; ?>
+                <div class="3u{{ $count%4==0?'$':'' }} 4u{{ $count%3==0?'$':'' }}(medium) 12u$(small)" data-name="{{$mentor['name']}}" data-url="{{asset('storage/' . $mentor['image'])}}" data-about="{{$mentor['about']}}">
+                    <article class="box post">
+                        <a href="" class="modal_trigger">
+                            <img src="{{asset('storage/' . $mentor['image'])}}" class="image fit" />
+                        </a>
+                        <h3 class="redText"><a href="" class="modal_trigger">{{$mentor['name']}}</a></h3>
+                        <p>{{$mentor['tagline']}}<p>
+                        <ul class="icons mentorIcons">
+                            @if($mentor['fb'] != "")
+                                <li><a href="http://www.facebook.com/{{ $mentor['fb'] }}" class="icon fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+                            @endif
+                            @if($mentor['github'] != "")
+                                <li><a href="http://www.github.com/{{ $mentor['github'] }}" class="icon fa-github" target="_blank"><span class="label">Github</span></a></li>
+                            @endif
+                            @if($mentor['website'] != "")
+                                <li><a href="{{ $mentor['website'] }}" class="icon fa-desktop" target="_blank"><span class="label">Website</span></a></li>
+                            @endif
+                        </ul>
+                    </article>
+                </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -166,7 +175,18 @@
         <li><a href="mailto:contact@ignitethefla.me?subject=I've got a question about Ignite!&body=I've got a question about Ignite!1%0D%0A%0D%0A" class="button big">Email Us</a></li>
     </ul>
 </section>
-
+<div class="ui modal" id="modal">
+  <i class="close icon"></i>
+  <div class="header" id="mentorName"></div>
+    <div class="image fit" id="mentorImage" style="max-width: 300px;margin:0 auto;margin-top:20px;"></div>
+        <hr/>
+    <div class="description" id="mentorAbout" style="padding:20px;"></div>
+  <div class="actions">
+    <div class="ui positive button">
+      Close
+    </div>
+  </div>
+</div>
         <!-- Footer -->
             <footer id="footer">
                 <ul class="icons">
@@ -181,6 +201,20 @@
 
         <!-- Scripts -->
             <script src="{{ asset('SPA_assets/js/jquery.min.js') }}"></script>
+            <script src="{{ asset('SPA_assets/js/modal.min.js') }}"></script>
+            <script>
+            $(document).ready(function(){
+                $(".modal_trigger").click(function(e){
+                    var div = $(this).closest('div');
+                    $("#mentorName").html(div.data('name'));
+                    $("#mentorImage").html("<img src='"+div.data('url')+"'>");
+                    $("#mentorAbout").html(div.data('about'));
+                    console.log(div.data('tagline'));
+                    $('.ui.modal').modal('show');
+                    e.preventDefault();
+                });
+            });
+            </script>
             <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> {{-- jQuery UI --}}
             {{--<script src="{{ asset('SPA_assets/js/jquery.dropotron.min.js') }}"></script>--}}
             <script src="{{ asset('SPA_assets/js/jquery.scrollgress.min.js') }}"></script>
@@ -188,6 +222,7 @@
             {{--<script src="{{ asset('SPA_assets/js/jquery.slidertron.min.js') }}"></script>--}}
             <script src="{{ asset('SPA_assets/js/skel.min.js') }}"></script>
             <script src="{{ asset('SPA_assets/js/util.js') }}"></script>
+         
             <!--[if lte IE 8]><script src="{{ asset('SPA_assets/js/ie/respond.min.js') }}"></script><![endif]-->
             <script src="{{ asset('SPA_assets/js/main.js') }}"></script>
 

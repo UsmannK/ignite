@@ -65,7 +65,8 @@ class PageController extends Controller {
         return view('dashboard.dashboard', compact('applications', 'data'));
     }
     public function index() {
-        return view('home');
+        $mentors = \App\Models\User::all(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();
+        return view('home', compact('mentors'));
     }
     public function showRate($id  = null) {
         if(is_null($id)) {
@@ -147,6 +148,9 @@ class PageController extends Controller {
     }
     public function submitSettings(Request $request) {
         $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+            'tagline' => 'required',
+            'about' => 'required',
         ]);
         if ($validator->fails()) {
             return $validator->errors()->all();
@@ -154,6 +158,9 @@ class PageController extends Controller {
         $user = Auth::user();
         $user->name = $request->name;
         $user->tagline = $request->tagline;
+        $user->fb = $request->fb;
+        $user->github = $request->github;
+        $user->website = $request->website;
         $user->about = $request->about;
         if($request->enable_keyboard) {
             $user->enable_keyboard = 1;

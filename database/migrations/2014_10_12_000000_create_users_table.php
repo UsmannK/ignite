@@ -18,6 +18,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('tagline');
+            $table->string('fb');
+            $table->string('github');
+            $table->string('website');
             $table->string('image');
             $table->text('about');
             $table->boolean('enable_keyboard')->default(false);
