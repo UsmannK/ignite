@@ -23,7 +23,7 @@ function saveToDB() {
         dataType: 'json',
         success: function(data) {
             if(data['message'] == 'success') {
-                 $("#save_text").html('<abbr title="' + data['updated_at']['date'] +'">Saved.</abbr>');
+                 $("#save_text").html('<abbr title="' + data['updated_at'] +'">Saved.</abbr>');
             }
         }
     });
@@ -46,7 +46,7 @@ function saveToDB() {
                         <textarea name="notes" id="editor1" rows="10" cols="80">{{$interview['notes']}}</textarea>
                     </form>
                     <hr/>
-                    <span id="save_text">Nothing saved yet.</span>
+                    <span id="save_text">{!!$interview['updated_at'] ? '<abbr title="' .$interview['updated_at'] .'">Saved.</abbr>' : 'Nothing saved yet.'!!}</span>
                 </div>
             </div>
         </div>

@@ -13,6 +13,7 @@ use Auth;
 use DB;
 use Carbon\Carbon;
 use Datatables;
+use Storage;
 
 class PageController extends Controller {
     /**
@@ -124,6 +125,7 @@ class PageController extends Controller {
             'applications.id',
             'applications.name',
             'applications.email',
+            'applications.interview_timeslot',
             \DB::raw('count(application_ratings.application_id) as ratings'),
             \DB::raw('AVG(application_ratings.rating) as avg'),
             \DB::raw('application_ratings.rating as myrating'),
@@ -134,6 +136,9 @@ class PageController extends Controller {
     }
     public function showSettings() {
         return view('settings');
+    }
+    public function showSettingsPicture() {
+        return view('settings_picture');
     }
     public function submitSettings(Request $request) {
         $validator = \Validator::make($request->all(), [
@@ -233,5 +238,21 @@ class PageController extends Controller {
         $application->interview_timeslot = $request->timeslot;
         $application->save();
         return response()->json(['message' => 'success']);
+    }
+    public function tempProfilePicStore(Request $request) {
+        $validator = \Validator::make($request->all(), [
+            'photo' => 'required|image',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $image = $request->file('photo');
+        $destinationPath = storage_path('app/public') . '/uploads';
+
+        if(!$image->move($destinationPath, $image->getClientOriginalName())) {
+            return $this->errors(['message' => 'Error saving the file.', 'code' => 400]);
+        }
+
+        return response()->json(['message' => 'success', 'location' => asset('storage/' .  $image->getClientOriginalName())], 200);
     }
 }

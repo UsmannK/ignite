@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('bottom_js')
+<script src="{{asset('ckeditor/ckeditor.js')}}"></script>
 <script>
 $(document).ready(function() {
     $('#settingsForm').submit(function(event) {
@@ -18,6 +19,8 @@ $(document).ready(function() {
         });
         event.preventDefault();
     });
+
+    var editor = CKEDITOR.replace('inputAbout');
 });
 </script>
 @stop
@@ -35,6 +38,21 @@ $(document).ready(function() {
                     <div id="message"></div>
                     <form id="settingsForm">
                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                        <div class="form-group">
+                            <label for="inputName">Full Name</label>
+                            <input type="text" class="form-control" id="inputName" value="{{Auth::user()->name}}" placeholder="Full Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputTagline">Tagline</label>
+                            <input type="text" class="form-control" id="inputTagline" value="{{Auth::user()->tagline}}" placeholder="Tagline">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAbout">About Me:</label>
+                            <textarea class="form-control" id="inputAbout" value="{{Auth::user()->about}}"></textarea>
+                            <p class="help-block">Introduce yourself, list organizations you're involved with, etc.</p>
+                        </div>
+                        
+                        <hr/>
                         <div class="checkbox">
                             <label>
                                 <input name="enable_keyboard" type="checkbox" {{(Auth::user()->enable_keyboard) ? 'checked' : ''}}> Enable keyboard control for Rating

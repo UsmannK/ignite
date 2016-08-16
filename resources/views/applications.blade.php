@@ -14,16 +14,17 @@ $(function() {
             { data: 'email', name: 'email' },
             { data: 'reviews', name: 'ratings',searchable: false},
             { data: 'UserRating', name: 'myrating',searchable: false},
-            @role('admin')
-            { data: 'avg', name: 'avg',searchable: false},
-            @endrole()
+            { data: 'interview_timeslot', name: 'interview_timeslot',searchable: false},
             {
                 "className":'interview',
                 "orderable":      false,
                 "searchable":      false,
                 "data":           null,
                 "defaultContent": 'Interview &raquo;'
-            }
+            },
+            @role('admin')
+            { data: 'avg', name: 'avg',searchable: false}
+            @endrole()
         ],
         "aoColumnDefs": [
             {
@@ -36,6 +37,12 @@ $(function() {
                 "aTargets": [6], // Column to target
                 "mRender": function ( data, type, full ) {
                     return '<a href="{{action('PageController@showInterview')}}/' + full['id'] + '">Interview &raquo;</a>';
+                }             
+            },
+            {
+                "aTargets": [5], // Column to target
+                "mRender": function ( data, type, full ) {
+                    return data != 0;
                 }             
             }
         ]
@@ -63,10 +70,11 @@ $(function() {
                                     <th>Email</th>
                                     <th>Ratings</th>
                                     <th>My Rating</th>
+                                    <th>Interview Scheduled?</th>
+                                    <th>Interview</th>
                                     @role('admin')
                                     <th>Average Rating</th>
                                     @endrole()
-                                    <th>Interview</th>
                                 </tr>
                             </thead>
                         </table>
