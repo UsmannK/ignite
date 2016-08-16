@@ -9,7 +9,7 @@ $(document).ready(function() {
         $.ajax({
             type: 'POST',
             url: '{{action('PageController@submitSettings')}}',
-            data: $(this).serialize(),
+            data: $(this).serialize()+'&'+$.param({ 'about': editor.getData() }),
             dataType: 'json',
             success: function(data) {
                 if(data['message'] == 'success') {
@@ -68,7 +68,7 @@ $(document).ready(function() {
                         </div>
                         <div class="form-group">
                             <label for="inputAbout">About Me:</label>
-                            <textarea class="form-control" id="inputAbout" value="{{Auth::user()->about}}" name="about">{{Auth::user()->about}}</textarea>
+                            <textarea class="form-control" id="inputAbout">{{Auth::user()->about}}</textarea>
                             <p class="help-block">Introduce yourself, list organizations you're involved with, etc.</p>
                         </div>
                         <hr/>
