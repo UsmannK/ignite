@@ -40,15 +40,15 @@ $(document).ready(function() {
                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                         <div class="form-group">
                             <label for="inputName">Full Name</label>
-                            <input type="text" class="form-control" id="inputName" value="{{Auth::user()->name}}" placeholder="Full Name">
+                            <input type="text" class="form-control" id="inputName" value="{{Auth::user()->name}}" name="name" placeholder="Full Name">
                         </div>
                         <div class="form-group">
                             <label for="inputTagline">Tagline</label>
-                            <input type="text" class="form-control" id="inputTagline" value="{{Auth::user()->tagline}}" placeholder="Tagline">
+                            <input type="text" class="form-control" id="inputTagline" value="{{Auth::user()->tagline}}" name="tagline" placeholder="Tagline">
                         </div>
                         <div class="form-group">
                             <label for="inputAbout">About Me:</label>
-                            <textarea class="form-control" id="inputAbout" value="{{Auth::user()->about}}"></textarea>
+                            <textarea class="form-control" id="inputAbout" value="{{Auth::user()->about}}" name="about"></textarea>
                             <p class="help-block">Introduce yourself, list organizations you're involved with, etc.</p>
                         </div>
                         

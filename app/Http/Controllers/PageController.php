@@ -148,6 +148,9 @@ class PageController extends Controller {
             return $validator->errors()->all();
         }
         $user = Auth::user();
+        $user->name = $request->name;
+        $user->tagline = $request->tagline;
+        $user->about = $request->about;
         if($request->enable_keyboard) {
             $user->enable_keyboard = 1;
         } else {
@@ -254,7 +257,6 @@ class PageController extends Controller {
         if(!$image->move($destinationPath, $name)) {
             return $this->errors(['message' => 'Error saving the file.', 'code' => 400]);
         }
-
         return response()->json(['message' => 'success', 'location' => asset('storage/' .  $name)], 200);
     }
     public function cropPicture(Request $request) {
@@ -273,6 +275,8 @@ class PageController extends Controller {
         $img = Image::make(storage_path('app\public') . '/uploads/' . $src);
         $img->crop(intval($request->width), intval($request->height), intval($request->x), intval($request->y));
         $img->save(storage_path('app\public') . '/uploads/' . $src);
+        Auth::user()->image = $src;
+        Auth::user()->save();
         \Session::flash('message', 'Updated profile photo!'); 
         return response()->json(['message' => 'success']);
     }
