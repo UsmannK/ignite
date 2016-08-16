@@ -14,6 +14,7 @@ use DB;
 use Carbon\Carbon;
 use Datatables;
 use Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PageController extends Controller {
     /**
@@ -248,11 +249,31 @@ class PageController extends Controller {
         }
         $image = $request->file('photo');
         $destinationPath = storage_path('app/public') . '/uploads';
-
-        if(!$image->move($destinationPath, $image->getClientOriginalName())) {
+        $random = str_random(40);
+        $name =  $random . '.' . $image->getClientOriginalExtension();
+        if(!$image->move($destinationPath, $name)) {
             return $this->errors(['message' => 'Error saving the file.', 'code' => 400]);
         }
 
-        return response()->json(['message' => 'success', 'location' => asset('storage/' .  $image->getClientOriginalName())], 200);
+        return response()->json(['message' => 'success', 'location' => asset('storage/' .  $name)], 200);
+    }
+    public function cropPicture(Request $request) {
+        $validator = \Validator::make($request->all(), [
+            'src' => 'required',
+            'width' => 'required',
+            'height' => 'required',
+            'x' => 'required',
+            'y' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $url = explode("/", $request->src);
+        $src = $url[count($url)-1];
+        $img = Image::make(storage_path('app\public') . '/uploads/' . $src);
+        $img->crop(intval($request->width), intval($request->height), intval($request->x), intval($request->y));
+        $img->save(storage_path('app\public') . '/uploads/' . $src);
+        \Session::flash('message', 'Updated profile photo!'); 
+        return response()->json(['message' => 'success']);
     }
 }

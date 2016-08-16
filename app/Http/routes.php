@@ -27,6 +27,7 @@ Route::get('interview/view', 'PageController@showAllInterviews');
 Route::post('applications/submitTimeSlot', 'PageController@submitTimeslot');
 Route::post('interview/update', 'PageController@updateInterview');
 Route::post('store', 'PageController@tempProfilePicStore');
+Route::post('crop', 'PageController@cropPicture');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
 	Route::get('import', 'PageController@importExcel');
