@@ -28,6 +28,8 @@
                                 <td>{{$interview->applications}}</td>
                             </tr>
                         @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

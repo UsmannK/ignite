@@ -149,7 +149,7 @@
                             <img src="{{asset('storage/' . $mentor['image'])}}" class="image fit" />
                         </a>
                         <h3 class="redText"><a href="" class="modal_trigger">{{$mentor['name']}}</a></h3>
-                        <p>{{$mentor['tagline']}}<p>
+                        <p>{{$mentor['tagline']}}</p>
                         <ul class="icons mentorIcons">
                             @if($mentor['fb'] != "")
                                 <li><a href="http://www.facebook.com/{{ $mentor['fb'] }}" class="icon fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>

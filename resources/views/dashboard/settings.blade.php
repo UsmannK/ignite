@@ -25,7 +25,6 @@ $(document).ready(function() {
         });
         event.preventDefault();
     });
-
     var editor = CKEDITOR.replace('inputAbout');
 });
 </script>
@@ -72,7 +71,6 @@ $(document).ready(function() {
                             <textarea class="form-control" id="inputAbout" value="{{Auth::user()->about}}" name="about">{{Auth::user()->about}}</textarea>
                             <p class="help-block">Introduce yourself, list organizations you're involved with, etc.</p>
                         </div>
-                        
                         <hr/>
                         <div class="checkbox">
                             <label>

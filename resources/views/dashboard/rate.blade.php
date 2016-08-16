@@ -6,11 +6,11 @@ var submitted = false;
 @if(Auth::user()->enable_keyboard)
 $(document).keyup(function(e) {
     var val;
-    if(e.keyCode == 97 || e.keyCode == 49) {
+    if(e.keyCode == 97 || e.keyCode == 49) { // 1 key
         val = 1;
-    } else if(e.keyCode == 98 || e.keyCode == 50) {
+    } else if(e.keyCode == 98 || e.keyCode == 50) { // 2 key
         val = 2;
-    } else if(e.keyCode == 99 || e.keyCode == 51) {
+    } else if(e.keyCode == 99 || e.keyCode == 51) { // 3 key
         val = 3;
     }
     if(val && !submitted) {
@@ -38,6 +38,7 @@ function submitRating(value) {
         }
     });
 }
+@role('admin')
 $('#timeslotForm').submit(function(event) {
     $.ajax({
         type: 'POST',
@@ -53,15 +54,12 @@ $('#timeslotForm').submit(function(event) {
     });
     event.preventDefault();
 });
+@endrole
 </script>
 @stop
 
 @section('content')
-<style>
-    .panel-body {
-        font-size: 16px;
-    }
-</style>
+<style>.panel-body {font-size: 16px;}</style>
 <div class="container">
     <div class="row">
         <div class="col-md-7">
