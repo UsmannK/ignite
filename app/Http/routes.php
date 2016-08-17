@@ -11,15 +11,16 @@ Route::post('submitRating', 'PageController@submitRating');
 Route::get('applications', 'PageController@showApplications');
 Route::post('applications/submitTimeSlot', 'PageController@submitTimeslot');
 
-Route::get('interview/active/{id?}', 'PageController@showInterview');
 Route::get('interview/view', 'PageController@showAllInterviews');
 Route::post('interview/update', 'PageController@updateInterview');
+Route::get('interview/sendInterviewTimes', 'PageController@sendInterviewTimes');
 
 Route::get('settings', 'PageController@showSettings');
 Route::get('settings/picture', 'PageController@showSettingsPicture');
 Route::post('settings', 'PageController@submitSettings');
 Route::post('store', 'PageController@tempProfilePicStore');
 Route::post('crop', 'PageController@cropPicture');
+
 
 Route::get('datatables', ['as' => 'datatables.data', 'uses' => 'PageController@getApplications']);
 
@@ -28,3 +29,5 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
 	Route::post('interview/create', 'PageController@submitCreateInterview');
 	Route::get('import', 'PageController@importExcel');
 });
+
+Route::get('interview/active/{id?}', 'PageController@showInterview')->where('id', '(.*)');

@@ -6,7 +6,7 @@ class InterviewSlot extends Model
 	protected $table = 'interview_slot';
 	protected $fillable = ['*'];
 	public $timestamps = false;
-	protected $appends = ['applications', 'formattedStartTime', 'formattedEndTime'];
+	protected $appends = ['applications', 'formattedStartTime', 'formattedEndTime', 'applicationsID'];
 	public function getApplicationsAttribute() {
 		$apps = Application::where('interview_timeslot',$this->id)->get(array('name'));
 		$string = "";
@@ -14,6 +14,14 @@ class InterviewSlot extends Model
 			$string .= $app['name'] . ", ";
 		}
 		return rtrim($string, ', ');
+	}
+	public function getApplicationsIDAttribute() {
+		$apps = Application::where('interview_timeslot',$this->id)->get(array('id'));
+		$string = "/";
+		foreach($apps as $app) {
+			$string .= $app['id'] . "/";
+		}
+		return rtrim($string, '/');
 	}
 	public function getFormattedStartTimeAttribute() {
 		$c = new \Carbon\Carbon($this->start_time);

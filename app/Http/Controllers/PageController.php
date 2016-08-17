@@ -206,15 +206,26 @@ class PageController extends Controller {
         return response()->json(['message' => 'success']);
     }
     public function showInterview($id = null) {
-        try {
-            $application = Application::findOrFail($id);
-            $interview = Interview::find($id);
-            if(!is_null($interview))
-            	$interview = $interview->toArray();
-            return view('dashboard.interview', compact('application', 'interview'));
-        } catch (\Exception $e) {
-            return redirect('/')->with('message', 'Could not find application.'); 
-        }        
+        if($id) {
+            $params = explode('/', $id);
+            try {
+                $applications = array();
+                $interviews = array();
+                foreach($params as $interviewID) {
+                    $application = Application::findOrFail($interviewID, ['id', 'name', 'email'])->toArray();
+                    $applications[] = $application;
+                    $interview = Interview::where('app_id', $interviewID)->first();
+                    if(!is_null($interview)) {
+                        $interviews[] = $interview->toArray();
+                    } else {
+                        $interviews[] = array('notes' => '', 'app_id' => $application['id'], 'user_id' => Auth::user()->id);
+                    }
+                }
+                return view('dashboard.interview', compact('applications', 'interviews'));
+            } catch (\Exception $e) {
+                return redirect('/dashboard')->with('message', 'Error building interview'); 
+            }
+        }      
     }
     public function updateInterview(Request $request) {
         $validator = \Validator::make($request->all(), [
@@ -288,5 +299,16 @@ class PageController extends Controller {
         Auth::user()->save();
         \Session::flash('message', 'Updated profile photo!'); 
         return response()->json(['message' => 'success']);
+    }
+    public function sendInterviewTimes() {
+        // $interviews = Application::first();
+        // echo $interviews->interviewTimeslot;
+        $applications = Application::all(['name', 'email', 'interview_timeslot', 'id']);
+        foreach($applications as $applicant) {
+            if($applicant->interview_timeslot) {
+                $slot = InterviewSlot::find($applicant->interview_timeslot);
+                echo $applicant->name . " at " . $slot->start_time . " in " . $slot->location . "<br/>";
+            }
+        }
     }
 }

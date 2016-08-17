@@ -3,23 +3,26 @@
 @section('bottom_js')
 <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
 <script>
-    var editor = CKEDITOR.replace('editor1');
-    var timeoutId;
-    editor.on('change', function() {
+    @for($i = 0; $i < count($applications); $i++)
+    var editor{{$i}} = CKEDITOR.replace('editor{{$i}}');
+    var timeoutId{{$i}};
+    editor{{$i}}.on('change', function() {
         console.log('Textarea Change');
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(function() {
-            saveToDB();
+        clearTimeout(timeoutId{{$i}});
+        var root = $(this);
+        root.data = this.getData();
+        timeoutId{{$i}} = setTimeout(function() {
+            saveToDB({{$applications[$i]['id']}},root.data);
         }, 1000);
     });
-
-function saveToDB() {
-    $("#save_text").html("Saving...");
+    @endfor
+function saveToDB(app_id, data) {
+    // $("#save_text").html("Saving...");
     console.log('Saving to the db');
     $.ajax({
         type: 'POST',
         url: '{{action('PageController@updateInterview')}}',
-        data: { "_token": "{{ csrf_token() }}", "app_id": {{$application['id']}}, "notes":  editor.getData()},
+        data: { "_token": "{{ csrf_token() }}", "app_id": app_id, "notes":  data},
         dataType: 'json',
         success: function(data) {
             if(data['message'] == 'success') {
@@ -39,14 +42,17 @@ function saveToDB() {
                 <p class="alert alert-info">{{ Session::get('message') }}</p>
             @endif        
             <div class="panel panel-default">
-                <div class="panel-heading">Interviewing {{$application['name']}}</div>
+                <div class="panel-heading">Interview</div>
                 <div class="panel-body">
-                    <b>Notes:</b>
+                    @for($i = 0; $i < count($applications); $i++)
+                        <h4>{{$applications[$i]['name']}}</h4>
+                        <b>Notes:</b>
                     <form id="interviewForm">
-                        <textarea name="notes" id="editor1" rows="10" cols="80">{{$interview['notes']}}</textarea>
+                        <textarea name="notes" id="editor{{$i}}" rows="10" cols="80">{{$interviews[$i]['notes']}}</textarea>
                     </form>
                     <hr/>
-                    <span id="save_text">{!!$interview['updated_at'] ? '<abbr title="' .$interview['updated_at'] .'">Saved.</abbr>' : 'Nothing saved yet.'!!}</span>
+                    @endfor
+                    <span id="save_text">Nothing saved yet.</span>
                 </div>
             </div>
         </div>

@@ -42,7 +42,10 @@ $(function() {
             {
                 "aTargets": [5], // Column to target
                 "mRender": function ( data, type, full ) {
-                    return data != 0;
+                    console.log(data);
+                    if(data)
+                        return '&#9989;'
+                    return '&#10006'
                 }             
             }
         ]

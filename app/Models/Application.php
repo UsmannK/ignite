@@ -41,7 +41,7 @@ class Application extends Model {
         return ApplicationRating::where('application_id',$this->id)->get()->count();
     }
     public function getUserRatingAttribute() {
-        $rating = ApplicationRating::where('application_id',$this->id)->where('user_id', Auth::user()->id)->first();
+        $rating = ApplicationRating::where('application_id', $this->id)->where('user_id', Auth::user()->id)->first();
         if($rating) {
             return $rating->rating;
         }
@@ -49,15 +49,5 @@ class Application extends Model {
     }
     public function ratings() {
         return $this->hasMany('App\Models\ApplicationRating');
-    }
-    public function interviewTimeslot() {
-        return $this->hasOne('App\Models\InterviewSlot');
-    }
-    public function userRating() {
-        $rating = ApplicationRating::where('application_id',$this->id)->where('user_id', Auth::user()->id)->first();
-        if($rating) {
-            return $rating->rating;
-        }
-        return "Not rated";
     }
 }

@@ -88,7 +88,7 @@ $('#timeslotForm').submit(function(event) {
                         <b>Why do you want to be part of Ignite? What do you hope to get out of the program?</b><br/>
                         {{$application['q2']}}
                     <hr/>
-                        <b>Q: What is your programming experience?</b><br/>
+                        <b>What is your programming experience?</b><br/>
                         {{$application['q3']}}
                     <hr/>
                         <b>What is one thing you'd like to learn this year?</b><br/>
