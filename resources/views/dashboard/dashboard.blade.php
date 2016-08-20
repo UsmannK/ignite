@@ -24,11 +24,13 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @for($i = 0; $i< count($users); $i++)
                             <tr>
-                                <th>1</th>
-                                <th>2</th>
-                                <th>3</th>
-                                </tr>
+                                <th>{{$i+1}}</th>
+                                <th>{{$users[$i]->name}}</th>
+                                <th>{{$users[$i]->ratings->count()}}</th>
+                            </tr>
+                            @endfor
                         </tbody>
                     </table>
                 </div>

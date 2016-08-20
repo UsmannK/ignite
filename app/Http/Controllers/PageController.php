@@ -61,8 +61,14 @@ class PageController extends Controller {
     */
     public function dashboard() {
         $applications = Application::count();
+        // $users = \App\Models\User::all(['id', 'name']);
+        $users = \App\Models\User::with('ratings')->get()->sortBy(function($users)
+{
+    return $users->ratings->count();
+});
+        var_dump($users->toArray());
         $data['count'] = Auth::user()->ratings->count();
-        return view('dashboard.dashboard', compact('applications', 'data'));
+        return view('dashboard.dashboard', compact('applications', 'data', 'users'));
     }
     public function index() {
         $mentors = \App\Models\User::all(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();

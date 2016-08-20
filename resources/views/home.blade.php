@@ -146,7 +146,11 @@
                 <div class="3u{{ $count%4==0?'$':'' }} 4u{{ $count%3==0?'$':'' }}(medium) 12u$(small)" data-name="{{$mentor['name']}}" data-url="{{asset('storage/' . $mentor['image'])}}" data-about="{{$mentor['about']}}">
                     <article class="box post">
                         <a href="" class="modal_trigger">
-                            <img src="{{asset('storage/' . $mentor['image'])}}" class="image fit" />
+                            @if($mentor['image'])
+                                <img src="{{asset('storage/' . $mentor['image'])}}" class="image fit" />
+                            @else
+                                <img src="{{asset('SPA_assets/images/no-img.png')}}" class="image fit" />
+                            @endif
                         </a>
                         <h3 class="redText"><a href="" class="modal_trigger">{{$mentor['name']}}</a></h3>
                         <p>{{$mentor['tagline']}}</p>
