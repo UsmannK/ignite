@@ -143,7 +143,11 @@
             <?php $count = 0; ?>
             @foreach($mentors as $mentor)
                 <?php $count++; ?>
+                @if($mentor['image'])
                 <div class="3u{{ $count%4==0?'$':'' }} 4u{{ $count%3==0?'$':'' }}(medium) 12u$(small)" data-name="{{$mentor['name']}}" data-url="{{asset('storage/' . $mentor['image'])}}" data-about="{{$mentor['about']}}">
+                @else
+                <div class="3u{{ $count%4==0?'$':'' }} 4u{{ $count%3==0?'$':'' }}(medium) 12u$(small)" data-name="{{$mentor['name']}}" data-url="{{asset('SPA_assets/images/no-img.png')}}" data-about="{{$mentor['about']}}">
+                @endif
                     <article class="box post">
                         <a href="" class="modal_trigger">
                             @if($mentor['image'])
