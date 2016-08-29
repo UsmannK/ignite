@@ -22,7 +22,7 @@ $(document).ready(function() {
         $("#message").fadeOut();
         $.ajax({
             url: '{{action('PageController@tempProfilePicStore')}}',
-            data:new FormData($(this)[0]),
+            data: new FormData($("#settingsForm")[0]),
             dataType:'json',
               async:false,
               type:'post',

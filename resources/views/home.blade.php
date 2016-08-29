@@ -17,48 +17,21 @@
         <link rel="stylesheet" href="{{ asset('SPA_assets/css/modal.min.css') }}" />
     </head>
     <body {!! Route::currentRouteAction()=="App\Http\Controllers\PageController@index"?'class="landing"':'' !!}>
-        <!-- Header -->
-        @if(Route::currentRouteAction()=="App\Http\Controllers\PageController@index")
-            <header id="header" class="alt">
-                <h1 class="logo_menuBar hoverPointer" onclick='scrollTo("#banner");'>
-                    {!! file_get_contents(public_path()."/SPA_assets/images/logo/svg/ignite.svg") !!}
-                </h1>
-
-                <nav id="nav">
-                    <ul>
-                        <li class="hoverPointer"><a href="#why" onclick='scrollTo("#why");'>Why</a></li>
-                        <li class="hoverPointer"><a href="#mentors" onclick='scrollTo("#mentors");'>Mentors</a></li>
-                        <li class="hoverPointer"><a href="#cta" onclick='scrollTo("#cta");'>Contact</a></li>
-          
-                        @if(session('loggedIn') == "true")
-                            <li class="hoverPointer"><a href="{{ action('PageController@dashboard') }}">Interviews</a></li>
-                        @endif
-                    </ul>
-                </nav>
-            </header>
-        @else
-            <header id="header">
-                <h1 class="logo_menuBar hoverPointer"><a href="{{ action('IgniteController@getIndex') }}#banner">
-                    {!! file_get_contents(public_path()."/SPA_assets/images/logo/svg/ignite.svg") !!}</a>
-                </h1>
-
-                <nav id="nav">
-                    <ul>
-                        <li class="hoverPointer"><a href="#why">Why</a></li>
-                        <li class="hoverPointer"><a href="#mentors">Mentors</a></li>
-                        <li class="hoverPointer"><a href="#cta">Contact</a></li>
-
-                        @if(session('loggedIn') == "true")
-                            <li class="hoverPointer"><a href="{{ action('IgniteController@getInterviews') }}">Interviews</a></li>
-                            <li class="hoverPointer"><a href="{{ action('IgniteController@getApplications') }}">Applications</a></li>
-                            <li class="hoverPointer"><a href="{{ action('IgniteController@getLogout') }}">Logout</a></li>
-                        @endif
-                    </ul>
-                </nav>
-            </header>
-        @endif
-
-        <!-- Banner -->
+        <header id="header" class="alt">
+            <h1 class="logo_menuBar hoverPointer" onclick='scrollTo("#banner");'>
+                {!! file_get_contents(public_path()."/SPA_assets/images/logo/svg/ignite.svg") !!}
+            </h1>
+            <nav id="nav">
+                <ul>
+                    <li class="hoverPointer"><a href="#why" onclick='scrollTo("#why");'>Why</a></li>
+                    <li class="hoverPointer"><a href="#mentors" onclick='scrollTo("#mentors");'>Mentors</a></li>
+                    <li class="hoverPointer"><a href="#cta" onclick='scrollTo("#cta");'>Contact</a></li>
+                    <li class="hoverPointer"><a href="{{action('PageController@calendar')}}">Calendar</a></li>
+                </ul>
+            </nav>
+        </header>
+       
+             <!-- Banner -->
 <section id="banner">
     <div class="inner">
         <h2 class="banner_flame">{!! file_get_contents(public_path()."/SPA_assets/images/logo/svg/flame.svg") !!}</h2>

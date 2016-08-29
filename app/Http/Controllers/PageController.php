@@ -61,18 +61,18 @@ class PageController extends Controller {
     */
     public function dashboard() {
         $applications = Application::count();
-        // $users = \App\Models\User::all(['id', 'name']);
-        $users = \App\Models\User::with('ratings')->get()->sortBy(function($users)
-{
-    return $users->ratings->count();
-});
-        var_dump($users->toArray());
+        $users = \App\Models\User::with('ratings')->get()->sortBy(function($users) {
+            return $users->ratings->count();
+        });
         $data['count'] = Auth::user()->ratings->count();
         return view('dashboard.dashboard', compact('applications', 'data', 'users'));
     }
     public function index() {
         $mentors = \App\Models\User::all(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();
         return view('home', compact('mentors'));
+    }
+    public function calendar() {
+    	return view('calendar');
     }
     public function showRate($id  = null) {
         if(is_null($id)) {
@@ -298,17 +298,15 @@ class PageController extends Controller {
         }
         $url = explode("/", $request->src);
         $src = $url[count($url)-1];
-        $img = Image::make(storage_path('app\public') . '/uploads/' . $src);
+        $img = Image::make(storage_path('app/public') . '/uploads/' . $src);
         $img->crop(intval($request->width), intval($request->height), intval($request->x), intval($request->y));
-        $img->save(storage_path('app\public') . '/uploads/' . $src);
+        $img->save(storage_path('app/public') . '/uploads/' . $src);
         Auth::user()->image = $src;
         Auth::user()->save();
         \Session::flash('message', 'Updated profile photo!'); 
         return response()->json(['message' => 'success']);
     }
     public function sendInterviewTimes() {
-        // $interviews = Application::first();
-        // echo $interviews->interviewTimeslot;
         $applications = Application::all(['name', 'email', 'interview_timeslot', 'id']);
         foreach($applications as $applicant) {
             if($applicant->interview_timeslot) {

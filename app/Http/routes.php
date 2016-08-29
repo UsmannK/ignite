@@ -3,6 +3,8 @@
 Route::auth();
 
 Route::get('/', 'PageController@index');
+Route::get('calendar', 'PageController@calendar');
+
 Route::get('/home', function () {return redirect()->action('PageController@dashboard');});
 
 Route::get('/dashboard', 'PageController@dashboard');
