@@ -203,7 +203,16 @@
             {{--<script src="{{ asset('SPA_assets/js/jquery.slidertron.min.js') }}"></script>--}}
             <script src="{{ asset('SPA_assets/js/skel.min.js') }}"></script>
             <script src="{{ asset('SPA_assets/js/util.js') }}"></script>
-         
+            <script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-17806840-31', 'auto');
+              ga('send', 'pageview');
+
+            </script>
             <!--[if lte IE 8]><script src="{{ asset('SPA_assets/js/ie/respond.min.js') }}"></script><![endif]-->
             <script src="{{ asset('SPA_assets/js/main.js') }}"></script>
 
