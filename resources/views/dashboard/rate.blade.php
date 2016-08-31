@@ -54,6 +54,26 @@ $('#timeslotForm').submit(function(event) {
     });
     event.preventDefault();
 });
+
+$('#decisionForm button').click(function() {
+    var value = $(this).val();
+    var button = $(this);
+    $.ajax({
+        type: 'POST',
+        url: '{{action('PageController@submitDecision')}}',
+        data: { "_token": "{{ csrf_token() }}", "decision": value, "app_id": '{{$data['id']}}'},
+        dataType: 'json',
+        success: function(data) {
+            if(data['message'] == "success") {
+                // Visual feedback that request was successful
+                $("#reject").removeClass("active").html("Reject");
+                $("#standby").removeClass("active").html("Standby");
+                $("#accept").removeClass("active").html("Accept");
+                $(button).append(' <i class="fa fa-check" aria-hidden="true"></i>').addClass("active");
+            }
+        }
+    });
+});
 @endrole
 </script>
 @stop
@@ -101,8 +121,13 @@ $('#timeslotForm').submit(function(event) {
                         {{$application['q6']}}
                     @role('admin')
                         <hr/>
-                         <div class="btn btn-danger btn-lg text-left">Reject</div>
-                        <div class="btn btn-success btn-lg text-right">Accept</div>
+                        <div class="text-center">
+                            <form id="decisionForm">
+                                <button id="reject" type="button" value="0" class="btn btn-danger btn-lg text-left{{ ($application['accepted'] == 0) ? ' active' : '' }}">Reject{!! ($application['accepted'] == 0) ? ' <i class="fa fa-check" aria-hidden="true"></i>' : '' !!}</button>
+                                <button id="standby" type="button" value="-1" class="btn btn-warning btn-lg text-right{{ ($application['accepted'] == -1) ? ' active' : '' }}">Standby{!! ($application['accepted'] == -1) ? ' <i class="fa fa-check" aria-hidden="true"></i>' : '' !!}</button>
+                                <button id="accept" type="button" value="1" class="btn btn-success btn-lg text-right{{ ($application['accepted'] == 1) ? ' active' : '' }}">Accept{!! ($application['accepted'] == 1) ? ' <i class="fa fa-check" aria-hidden="true"></i>' : '' !!}</button>
+                            </form>
+                        </div>
                     @endrole
                 </div>
             </div>

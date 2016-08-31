@@ -99,6 +99,19 @@ class PageController extends Controller {
             return redirect('/')->with('message', 'Could not find application.'); 
         }
     }
+    public function submitDecision(Request $request) {
+         $validator = \Validator::make($request->all(), [
+            'app_id' => 'required|exists:applications,id',
+            'decision' => 'required|numeric|max:1|min:-1',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $application = Application::findOrFail($request->app_id);
+        $application->accepted = $request->decision;
+        $application->save();
+        return response()->json(['message' => 'success']);       
+    }
     public function submitRating(Request $request) {
         $validator = \Validator::make($request->all(), [
             'app_id' => 'required|exists:applications,id',

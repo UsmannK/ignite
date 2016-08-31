@@ -10,6 +10,7 @@ Route::get('/home', function () {return redirect()->action('PageController@dashb
 Route::get('/dashboard', 'PageController@dashboard');
 Route::get('rate/{id?}', 'PageController@showRate');
 Route::post('submitRating', 'PageController@submitRating');
+Route::post('submitDecision', 'PageController@submitDecision');
 Route::get('applications', 'PageController@showApplications');
 Route::post('applications/submitTimeSlot', 'PageController@submitTimeslot');
 
