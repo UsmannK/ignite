@@ -154,6 +154,7 @@ class PageController extends Controller {
             'applications.name',
             'applications.email',
             'applications.interview_timeslot',
+            'applications.accepted',
             \DB::raw('count(application_ratings.application_id) as ratings'),
             \DB::raw('AVG(application_ratings.rating) as avg'),
             \DB::raw('application_ratings.rating as myrating'),

@@ -15,6 +15,7 @@ $(function() {
             { data: 'reviews', name: 'ratings',searchable: false},
             { data: 'UserRating', name: 'myrating',searchable: false},
             { data: 'interview_timeslot', name: 'interview_timeslot',searchable: false},
+            { data: 'accepted', name: 'accepted',searchable: false},
             {
                 "className":'interview',
                 "orderable":      false,
@@ -34,7 +35,7 @@ $(function() {
                 }
             },
             {
-                "aTargets": [6], // Column to target
+                "aTargets": [7], // Column to target
                 "mRender": function ( data, type, full ) {
                     return '<a href="{{action('PageController@showInterview')}}/' + full['id'] + '">Interview &raquo;</a>';
                 }             
@@ -46,6 +47,18 @@ $(function() {
                     if(data)
                         return '&#9989;'
                     return '&#10006'
+                }             
+            },
+            {
+                "aTargets": [6], // Column to target
+                "mRender": function ( data, type, full ) {
+                    console.log(data);
+                    if(data == 1)
+                        return 'Accepted'
+                    else if(data == -1)
+                        return 'Standby'
+                    else if(data == 0)
+                        return 'Rejected'
                 }             
             }
         ]
@@ -74,6 +87,7 @@ $(function() {
                                     <th>Ratings</th>
                                     <th>My Rating</th>
                                     <th>Interview Scheduled?</th>
+                                    <th>Status</th>
                                     <th>Interview</th>
                                     @role('admin')
                                     <th>Average Rating</th>
