@@ -45,7 +45,7 @@ function saveToDB(app_id, data) {
                 <div class="panel-heading">Interview</div>
                 <div class="panel-body">
                     @for($i = 0; $i < count($applications); $i++)
-                        <h4>{{$applications[$i]['name']}}</h4>
+                        <h4>{{$applications[$i]['name']}} <small><a href="{{action('PageController@showRate', ['id' => $applications[$i]['id']])}}">(Application)</a></small></h4>
                         <b>Notes:</b>
                     <form id="interviewForm">
                         <textarea name="notes" id="editor{{$i}}" rows="10" cols="80">{{$interviews[$i]['notes']}}</textarea>

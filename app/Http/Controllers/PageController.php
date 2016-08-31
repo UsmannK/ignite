@@ -230,7 +230,7 @@ class PageController extends Controller {
     }
     public function showInterview($id = null) {
         if($id) {
-            $params = explode('/', $id);
+            $params = array_unique(explode('/', $id));
             try {
                 $applications = array();
                 $interviews = array();
