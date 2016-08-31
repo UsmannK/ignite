@@ -129,6 +129,16 @@ $('#decisionForm button').click(function() {
                             </form>
                         </div>
                     @endrole
+                    @role('mentor')
+                        <hr/>
+                        <div class="text-center">
+                            <form id="decisionForm">
+                                <button id="reject" type="button" value="0" class="btn btn-danger btn-lg text-left{{ ($application['accepted'] == 0) ? ' active' : '' }}" disabled>Reject{!! ($application['accepted'] == 0) ? ' <i class="fa fa-check" aria-hidden="true"></i>' : '' !!}</button>
+                                <button id="standby" type="button" value="-1" class="btn btn-warning btn-lg text-right{{ ($application['accepted'] == -1) ? ' active' : '' }}" disabled>Standby{!! ($application['accepted'] == -1) ? ' <i class="fa fa-check" aria-hidden="true"></i>' : '' !!}</button>
+                                <button id="accept" type="button" value="1" class="btn btn-success btn-lg text-right{{ ($application['accepted'] == 1) ? ' active' : '' }}" disabled>Accept{!! ($application['accepted'] == 1) ? ' <i class="fa fa-check" aria-hidden="true"></i>' : '' !!}</button>
+                            </form>
+                        </div>
+                    @endrole
                 </div>
             </div>
         </div>

@@ -100,6 +100,9 @@ class PageController extends Controller {
         }
     }
     public function submitDecision(Request $request) {
+        if(!Auth::user()->hasRole('admin'))
+            return redirect('/dashboard')->with('message', 'Invalid Permissions.');
+
          $validator = \Validator::make($request->all(), [
             'app_id' => 'required|exists:applications,id',
             'decision' => 'required|numeric|max:1|min:-1',
