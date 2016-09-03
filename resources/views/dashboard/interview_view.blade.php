@@ -1,10 +1,18 @@
 @extends('layouts.app')
 
+@section('top')
+<link rel="stylesheet" href="{{asset('css/bootstrap-multiselect.css')}}">
+@stop
+
 @section('bottom_js')
+<script type="text/javascript" src="{{asset('js/bootstrap-multiselect.js')}}"></script>
 <script>
 $("#confirm_send").click(function() {
     console.log("wat");
 })
+ $(document).ready(function() {
+        $('.example-getting-started').multiselect();
+    });
 </script>
 @stop
 
@@ -47,6 +55,7 @@ $("#confirm_send").click(function() {
                                 <th>Location</th>
                                 <th>Students</th>
                                 <th>Interview</th>
+                                <th>Mentors</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,6 +70,13 @@ $("#confirm_send").click(function() {
                                 @else
                                 <td><a href="{{action('PageController@showInterview')}}{{$interview->applicationsID}}">Multi-Interview &raquo;</a></td>
                                 @endif
+                                <td>
+                                    <select class="example-getting-started" multiple="multiple">
+                                        @foreach($interview->mentorsAssigned as $mentor)
+                                            <option>{{$mentor['mentor']['name']}}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

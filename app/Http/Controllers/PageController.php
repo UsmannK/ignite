@@ -23,7 +23,7 @@ class PageController extends Controller {
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth', ['except' => ['index']]);
+        $this->middleware('auth', ['except' => ['index', 'calendar']]);
     }
 
     /**
@@ -303,7 +303,8 @@ class PageController extends Controller {
     }
     public function showAllInterviews() {
         $interviews = InterviewSlot::orderBy('start_time', 'asc')->get();
-        return view('dashboard.interview_view', compact('interviews'));
+        $mentors = \App\Models\User::get(array('id', 'name'))->toArray();
+        return view('dashboard.interview_view', compact('interviews', 'mentors'));
     }
     public function submitTimeslot(Request $request) {
         if(!Auth::user()->hasRole('admin'))
