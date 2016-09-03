@@ -8,7 +8,7 @@ class InterviewAssignment extends Model {
 
 	protected $appends = ['mentor'];
 	public function getMentorAttribute() {
-		$user = User::where('id',$this->id)->first(array('id', 'name'));
+		$user = User::where('id',$this->user_id)->first(array('id', 'name'));
 		return $user;
 	}
 }
