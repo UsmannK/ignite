@@ -50,6 +50,7 @@ $("#confirm_send").click(function() {
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Location</th>
@@ -60,7 +61,8 @@ $("#confirm_send").click(function() {
                         </thead>
                         <tbody>
                         @foreach($interviews as $interview)
-                            <tr>
+                            <tr>   
+                                <td>#{{$interview->id}}</td>
                                 <td>{{$interview->formattedStartTime}}</td>
                                 <td>{{$interview->formattedEndTime}}</td>
                                 <td>{{$interview['location'] == '' ? 'TBA' : $interview['location']}}</td>
