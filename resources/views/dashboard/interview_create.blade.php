@@ -55,8 +55,8 @@ $(document).ready(function() {
                         </div>
                         <hr/>
                         <div class="form-group">
-                            <label for="inputIncrement">Increment between interviews (minutes)</label>
-                            <input type="text" class="form-control" id="inputIncrement" placeholder="20" name="increment">
+                            <label for="inputLength">Length of Interview (minutes)</label>
+                            <input type="text" class="form-control" id="inputLength" placeholder="20" name="length">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit &raquo;</button>
                     </form>

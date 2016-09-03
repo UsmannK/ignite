@@ -202,8 +202,9 @@ class PageController extends Controller {
             'end_day' => 'required|date_format:"d/m/Y"',
             'start_time' => 'required|numeric',
             'end_time' => 'required|numeric',
-            'increment' => 'required|numeric|min:0',
+            'length' => 'required|numeric|min:0',
         ]);
+        $offset = 5;
         if ($validator->fails()) {
             return $validator->errors()->all();
         }
@@ -220,9 +221,9 @@ class PageController extends Controller {
             while($currTime <= $endTime) {
                 $interview = new InterviewSlot;
                 $interview->start_time = $currTime;
-                $interview->end_time = $currTime->copy()->addMinutes($request->increment);
+                $interview->end_time = $currTime->copy()->addMinutes($request->length);
                 $interview->save();
-                $currTime->addMinutes($request->increment);
+                $currTime->addMinutes($request->length)->addMinutes($offset);
             }
             $currDay->addDays(1);
         }
