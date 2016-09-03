@@ -6,7 +6,7 @@ class InterviewSlot extends Model
 	protected $table = 'interview_slot';
 	protected $fillable = ['*'];
 	public $timestamps = false;
-	protected $appends = ['applications', 'formattedStartTime', 'formattedEndTime', 'applicationsID'];
+	protected $appends = ['applications', 'formattedStartTime', 'formattedEndTime', 'applicationsID', 'applicationsCount'];
 	public function getApplicationsAttribute() {
 		$apps = Application::where('interview_timeslot',$this->id)->get(array('name'));
 		$string = "";
@@ -14,6 +14,9 @@ class InterviewSlot extends Model
 			$string .= $app['name'] . ", ";
 		}
 		return rtrim($string, ', ');
+	}
+	public function getApplicationsCountAttribute() {
+		return Application::where('interview_timeslot',$this->id)->count();
 	}
 	public function getApplicationsIDAttribute() {
 		$apps = Application::where('interview_timeslot',$this->id)->get(array('id'));

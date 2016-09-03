@@ -90,7 +90,7 @@ class PageController extends Controller {
                 $rating = $rating->toArray();
             }
             $data['id'] = $id;
-            $slots = InterviewSlot::all();
+            $slots = InterviewSlot::orderBy('start_time', 'asc')->get();
             if(($interviews = Interview::where('app_id', $id)->get()) != null) {
             	$interviews = $interviews->toArray();
             }
