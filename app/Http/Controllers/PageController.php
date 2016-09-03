@@ -302,7 +302,7 @@ class PageController extends Controller {
     	return response()->json(['message' => 'success', 'updated_at' => $updated_at->format('g:i:s A')]);
     }
     public function showAllInterviews() {
-        $interviews = InterviewSlot::all();
+        $interviews = InterviewSlot::orderBy('start_time', 'asc')->get();
         return view('dashboard.interview_view', compact('interviews'));
     }
     public function submitTimeslot(Request $request) {
