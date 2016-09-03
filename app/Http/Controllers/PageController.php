@@ -99,11 +99,45 @@ class PageController extends Controller {
             return redirect('/')->with('message', 'Could not find application.'); 
         }
     }
+    public function submitInterviewDecision(Request $request) {
+        $validator = \Validator::make($request->all(), [
+            'app_id' => 'required|exists:applications,id',
+            'decision' => 'required|numeric|max:3|min:1',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $interview = Interview::firstOrNew(['app_id' => $request->app_id, 'user_id' => Auth::user()->id]);
+        $interview->app_id = $request->app_id;
+        $interview->user_id = Auth::user()->id;
+        $interview->decision = $request->decision;
+        $interview->save();
+        $updated_at = new Carbon($interview->updated_at);
+        return response()->json(['message' => 'success', 'updated_at' => $updated_at->format('g:i:s A')]);
+    }
+    public function submitInterviewAttribute(Request $request) {
+        $validator = \Validator::make($request->all(), [
+            'app_id' => 'required|exists:applications,id',
+            'attribute' => 'required|in:passion,commitment,drive',
+            'value' => 'required|boolean'
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $attribute = $request->attribute;
+        $interview = Interview::firstOrNew(['app_id' => $request->app_id, 'user_id' => Auth::user()->id]);
+        $interview->app_id = $request->app_id;
+        $interview->user_id = Auth::user()->id;
+        $interview->$attribute = $request->value;
+        $interview->save();
+        $updated_at = new Carbon($interview->updated_at);
+        return response()->json(['message' => 'success', 'updated_at' => $updated_at->format('g:i:s A')]);
+    }
     public function submitDecision(Request $request) {
         if(!Auth::user()->hasRole('admin'))
             return redirect('/dashboard')->with('message', 'Invalid Permissions.');
 
-         $validator = \Validator::make($request->all(), [
+        $validator = \Validator::make($request->all(), [
             'app_id' => 'required|exists:applications,id',
             'decision' => 'required|numeric|max:1|min:-1',
         ]);
@@ -113,7 +147,7 @@ class PageController extends Controller {
         $application = Application::findOrFail($request->app_id);
         $application->accepted = $request->decision;
         $application->save();
-        return response()->json(['message' => 'success']);       
+        return response()->json(['message' => 'success']);
     }
     public function submitRating(Request $request) {
         $validator = \Validator::make($request->all(), [
@@ -237,11 +271,11 @@ class PageController extends Controller {
                 foreach($params as $interviewID) {
                     $application = Application::findOrFail($interviewID, ['id', 'name', 'email'])->toArray();
                     $applications[] = $application;
-                    $interview = Interview::where('app_id', $interviewID)->first();
+                    $interview = Interview::where('app_id', $interviewID)->where('user_id', Auth::user()->id)->first();
                     if(!is_null($interview)) {
                         $interviews[] = $interview->toArray();
                     } else {
-                        $interviews[] = array('notes' => '', 'app_id' => $application['id'], 'user_id' => Auth::user()->id);
+                        $interviews[] = array('notes' => '', 'app_id' => $application['id'], 'user_id' => Auth::user()->id, 'decision' => -1, 'passion' => 0, 'commitment' => 0, 'drive' => 0);
                     }
                 }
                 return view('dashboard.interview', compact('applications', 'interviews'));
