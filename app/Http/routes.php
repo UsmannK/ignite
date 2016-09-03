@@ -11,6 +11,8 @@ Route::get('/dashboard', 'PageController@dashboard');
 Route::get('rate/{id?}', 'PageController@showRate');
 Route::post('submitRating', 'PageController@submitRating');
 Route::post('submitDecision', 'PageController@submitDecision');
+Route::post('submitInterviewDecision', 'PageController@submitInterviewDecision');
+Route::post('submitInterviewAttribute', 'PageController@submitInterviewAttribute');
 Route::get('applications', 'PageController@showApplications');
 Route::post('applications/submitTimeSlot', 'PageController@submitTimeslot');
 

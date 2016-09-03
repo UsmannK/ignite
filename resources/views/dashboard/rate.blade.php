@@ -91,9 +91,9 @@ $('#decisionForm button').click(function() {
             @endif
             <div class="text-center">
                 <div class="btn-group" role="group" aria-label="rating" id="rating-group">
-                    <button type="button" class="btn btn-{{$rating['rating'] == 1 ? 'primary' : 'default' }}" value="1">1</button>
-                    <button type="button" class="btn btn-{{$rating['rating'] == 2 ? 'primary' : 'default' }}" value="2">2</button>
-                    <button type="button" class="btn btn-{{$rating['rating'] == 3 ? 'primary' : 'default' }}" value="3">3</button>
+                    <button type="button" class="btn btn-{{$rating['rating'] == 1 ? 'primary' : 'default' }}" value="1">1 <i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-{{$rating['rating'] == 2 ? 'primary' : 'default' }}" value="2">2 <i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-{{$rating['rating'] == 3 ? 'primary' : 'default' }}" value="3">3 <i class="fa fa-heart-o" aria-hidden="true"></i></button>
                 </div>
             </div>
             <br/>
@@ -143,6 +143,18 @@ $('#decisionForm button').click(function() {
             </div>
         </div>
         <div class="col-md-5">
+        	<div class="panel panel-default">
+        	    <div class="panel-heading">Rating Guide</div>
+                <div class="panel-body">
+                	<i class="fa fa-thumbs-o-down" aria-hidden="true"></i> - Does not display passion, interest. <i>(No)</i><br/>
+				 	<i class="fa fa-thumbs-o-up" aria-hidden="true"></i> - May be good for Ignite, need more info. <i>(Maybe)</i><br/>
+ 					<i class="fa fa-heart-o" aria-hidden="true"></i> - Passionate student, a great fit for Ignite. <i>(Yes)</i>
+ 					<br/><br/>
+ 					Most students will fall in the <b>2 (<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>)</b> range, only a few applicants will be a <i class="fa fa-thumbs-o-down" aria-hidden="true"></i> or <i class="fa fa-heart-o" aria-hidden="true"></i>.
+ 					<hr/>
+ 					You should be looking for passion and interest in the applications (as much as you can with text). Experience <b>should not</b> play a large role when rating.
+                </div>
+            </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Interview</div>
                 <div class="panel-body">
