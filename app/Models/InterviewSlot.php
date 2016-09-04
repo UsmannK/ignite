@@ -32,7 +32,7 @@ class InterviewSlot extends Model
 	}
 	public function getFormattedEndTimeAttribute() {
 		$c = new \Carbon\Carbon($this->end_time);
-		return $c->format('l, F j \a\t g:i A');
+		return $c->format('g:i A');
 	}
 	public function mentorsAssigned()
     {

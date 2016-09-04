@@ -1,0 +1,4 @@
+Hi {{$applicant->name}}!
+<br/><br/>
+Your Ignite interview has been scheduled for this <b>{{$start->format('l (F j) \a\t g:i a')}}.</b>
+Your interview will take place in <a href='https://www.google.com/maps/place/The+Anvil/@40.4261782,-86.9100484,15z/data=!4m2!3m1!1s0x0:0xfec7fcdc61c1d63d?sa=X&ved=0ahUKEwib8PSOy_TOAhXM7YMKHUEFDTQQ_BIIggEwDw'>the Anvil</a>. You'll be interviewing with {{$string}} (Note that more interviewers may be added at a later time). You can find out more about your interviewer(s) on our website, http://ignitethefla.me.<br/>Be sure to have a project idea thoroughly thought out, and be ready to talk about your idea and yourself! Also, remember that this is a casual/informal interview, so do not dress up. We look forward to talking with you!<br/><br/>If you have any questions, please let us know. Good luck on your interview!<br/><br/>Thanks,<br/>The Ignite Team

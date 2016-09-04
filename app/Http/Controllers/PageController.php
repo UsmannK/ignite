@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Datatables;
 use Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+use Mail;
 
 class PageController extends Controller {
     /**
@@ -166,12 +167,11 @@ class PageController extends Controller {
     }
     public function getNextApplicationID() {
         $user = Auth::user();
+        $user = Auth::user();
         foreach(Application::orderBy(DB::raw('RAND()'))->get() as $app) {
-            if($app->reviews < 3) {
-                if(!ApplicationRating::where('application_id',$app->id)->where('user_id',$user->id)->first()) {
-                    return($app->id);
-                }
-            }
+            if(ApplicationRating::where('application_id',$app->id)->where('user_id','!=',$user->id)->first()) {
+                return($app->id);
+            }      
         }
         return null;
     }
@@ -360,11 +360,22 @@ class PageController extends Controller {
         return response()->json(['message' => 'success']);
     }
     public function sendInterviewTimes() {
-        $applications = Application::all(['name', 'email', 'interview_timeslot', 'id']);
+        $applications = Application::where('emailed', '!=', 1)->get(['name', 'email', 'interview_timeslot', 'id']);
         foreach($applications as $applicant) {
             if($applicant->interview_timeslot) {
                 $slot = InterviewSlot::find($applicant->interview_timeslot);
-                echo $applicant->name . " at " . $slot->start_time . " in " . $slot->location . "<br/>";
+                $start = new Carbon($slot->start_time);
+                $string = "";
+                foreach ($slot->mentorsAssigned->toArray() as $mentor) {
+                    $string .= $mentor['mentor']['name'] . " and ";
+                }
+                $string = substr($string, 0, -5);
+                echo $applicant->email . " " . $applicant->name ."<br/>";
+                Mail::send('emails.interview',  ['slot' => $slot, 'applicant' => $applicant, 'start' => $start, 'string' => $string], function ($message) use ($slot,$applicant,$start,$string) {
+                     $message->to($applicant->email, $name = $applicant->name);
+                });
+                $applicant->emailed = 1;
+                $applicant->save();
             }
         }
     }

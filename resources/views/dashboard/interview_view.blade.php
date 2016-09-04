@@ -1,18 +1,10 @@
 @extends('layouts.app')
 
-@section('top')
-<link rel="stylesheet" href="{{asset('css/bootstrap-multiselect.css')}}">
-@stop
-
 @section('bottom_js')
-<script type="text/javascript" src="{{asset('js/bootstrap-multiselect.js')}}"></script>
 <script>
 $("#confirm_send").click(function() {
     console.log("wat");
 })
- $(document).ready(function() {
-        $('.example-getting-started').multiselect();
-    });
 </script>
 @stop
 
@@ -50,34 +42,30 @@ $("#confirm_send").click(function() {
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Location</th>
+                                <th class="hidden-xs hidden-sm hidden-md">ID</th>
+                                <th>Start</th>
+                                <th>End</th>
                                 <th>Students</th>
-                                <th>Interview</th>
+                                <th style="min-width:100px;">Interview</th>
                                 <th>Mentors</th>
                             </tr>
                         </thead>
                         <tbody>
                         @foreach($interviews as $interview)
                             <tr>   
-                                <td>#{{$interview->id}}</td>
+                                <td class="hidden-xs hidden-sm hidden-md">#{{$interview->id}}</td>
                                 <td>{{$interview->formattedStartTime}}</td>
                                 <td>{{$interview->formattedEndTime}}</td>
-                                <td>{{$interview['location'] == '' ? 'TBA' : $interview['location']}}</td>
                                 <td>{{$interview->applications}}</td>
                                 @if($interview->applicationsID == '')
                                 <td>-</td>
                                 @else
-                                <td><a href="{{action('PageController@showInterview')}}{{$interview->applicationsID}}">Multi-Interview &raquo;</a></td>
+                                <td><a href="{{action('PageController@showInterview')}}{{$interview->applicationsID}}">Interview &raquo;</a></td>
                                 @endif
                                 <td>
-                                    <select class="example-getting-started" multiple="multiple">
-                                        @foreach($interview->mentorsAssigned as $mentor)
-                                            <option>{{$mentor['mentor']['name']}}</option>
-                                        @endforeach
-                                    </select>
+                                    @foreach($interview->mentorsAssigned as $mentor)
+                                       {{$mentor['mentor']['name']}},
+                                    @endforeach
                                 </td>
                             </tr>
                         @endforeach
