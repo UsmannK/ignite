@@ -1,31 +1,6 @@
 @extends('layouts.app')
 
-@section('bottom_js')
-<script>
-$("#confirm_send").click(function() {
-    console.log("wat");
-})
-</script>
-@stop
-
 @section('content')
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Confirm Sending</h4>
-      </div>
-      <div class="modal-body">
-        Please confirm sending interview times.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-default" id="confirm_send">I'm sure I want to do this</button>
-      </div>
-    </div>
-  </div>
-</div>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -35,10 +10,7 @@ $("#confirm_send").click(function() {
             <div class="panel panel-default">
                 <div class="panel-heading">Viewing All Interview Timeslots</div>
                 <div class="panel-body">
-                    @role('admin')
-                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Send Interview Times</button>
-                    <hr/>
-                    @endrole('admin')
+                    <div class="alert alert-info">All interviews will be held in the <a href="https://goo.gl/maps/eYPYZfxWNAo">Anvil</a>. Please try to arrive to your assigned timeslot at least five minutes ahead of time. If you have interviews scheduled back to back, make sure to keep an eye on the clock.<hr/><a href="https://docs.google.com/document/d/12iQzIme9IrPk7c9MmjmuYEkBbdLBUSObiIOlw27cSmM/edit?usp=sharing">View Interview Questions &raquo;</a></div>
                     <table class="table table-bordered">
                         <thead>
                             <tr>

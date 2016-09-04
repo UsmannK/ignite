@@ -167,7 +167,6 @@ class PageController extends Controller {
     }
     public function getNextApplicationID() {
         $user = Auth::user();
-        $user = Auth::user();
         foreach(Application::orderBy(DB::raw('RAND()'))->get() as $app) {
             if(ApplicationRating::where('application_id',$app->id)->where('user_id','!=',$user->id)->first()) {
                 return($app->id);
