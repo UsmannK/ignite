@@ -186,7 +186,15 @@ $('#decisionForm button').click(function() {
                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         Mentor Interviews:<br/><br/>
                         @for ($i = 0; $i < count($interviews); $i++)
-                            <div class="panel panel-default">
+                            @if($interviews[$i]['decision'] == 3)
+                                <div class="panel panel-success">
+                            @elseif($interviews[$i]['decision'] == 2)
+                                <div class="panel panel-warning">
+                            @elseif($interviews[$i]['decision'] == 1)
+                                <div class="panel panel-danger">
+                            @else
+                                <div class="panel panel-default">
+                            @endif
                                 <div class="panel-heading" role="tab">
                                     <h4 class="panel-title">
                                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$i}}">
@@ -197,6 +205,27 @@ $('#decisionForm button').click(function() {
                                 <div id="collapse-{{$i}}" class="panel-collapse collapse" role="tabpanel">
                                     <div class="panel-body">
                                         {!!$interviews[$i]['notes']!!}
+                                        <hr/>
+                                        @if($interviews[$i]['decision'] == 3)
+                                            <b>Accept</b>
+                                        @elseif($interviews[$i]['decision'] == 2)
+                                            <b>Standby</b>
+                                        @elseif($interviews[$i]['decision'] == 1)
+                                            <b>Deny</b>
+                                        @endif
+                                        <br/>
+                                        <label class="checkbox-inline">
+                                        <input type="checkbox" disabled {{ ($interviews[$i]['passion'] == 1) ? 'checked' : '' }}>
+                                        Passion
+                                        </label>
+                                        <label class="checkbox-inline">
+                                        <input type="checkbox" disabled {{ ($interviews[$i]['commitment'] == 1) ? 'checked' : '' }}>
+                                        Commitment
+                                        </label>
+                                        <label class="checkbox-inline">
+                                        <input type="checkbox" disabled {{ ($interviews[$i]['drive'] == 1) ? 'checked' : '' }}>
+                                        Drive
+                                        </label>
                                     </div>
                                 </div>
                             </div>
