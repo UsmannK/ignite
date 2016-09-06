@@ -3,9 +3,11 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Application extends Model {
 	protected $fillable = array('uuid', 'name');
-
+    use SoftDeletes;
 	public function ratingInfo()
     {
         $count = ApplicationRating::where('application_id',$this->id)->get()->count();

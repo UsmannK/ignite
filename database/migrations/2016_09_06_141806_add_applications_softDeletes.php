@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddEmailedFlag extends Migration
+class AddApplicationsSoftDeletes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddEmailedFlag extends Migration
     public function up()
     {
         Schema::table('applications', function (Blueprint $table) {
-            $table->integer('emailed');
+            $table->softDeletes();
         });
     }
 
