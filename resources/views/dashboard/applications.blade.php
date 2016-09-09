@@ -24,7 +24,8 @@ $(function() {
                 "defaultContent": 'Interview &raquo;'
             },
             @role('admin')
-            { data: 'avg', name: 'avg',searchable: false}
+            { data: 'avg', name: 'avg',searchable: false},
+            { data: 'interview_avg', name: 'interview_avg',searchable: false}
             @endrole()
         ],
         "aoColumnDefs": [
@@ -86,11 +87,12 @@ $(function() {
                                     <th>Email</th>
                                     <th>Ratings</th>
                                     <th>My Rating</th>
-                                    <th>Interview Scheduled?</th>
+                                    <th>Scheduled?</th>
                                     <th>Status</th>
                                     <th>Interview</th>
                                     @role('admin')
                                     <th>Average Rating</th>
+                                    <th>Interview Rating</th>
                                     @endrole()
                                 </tr>
                             </thead>
