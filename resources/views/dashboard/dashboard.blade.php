@@ -25,7 +25,11 @@
                         </thead>
                         <tbody>
                             @for($i = 0; $i< count($users); $i++)
-                            <tr>
+                            	@if($users[$i]->ratings->count() < 50)
+                            		<tr class="danger">
+                            	@else
+                            		<tr>
+                            	@endif
                                 <th>{{$i+1}}</th>
                                 <th>{{$users[$i]->name}}</th>
                                 <th>{{$users[$i]->ratings->count()}}</th>
