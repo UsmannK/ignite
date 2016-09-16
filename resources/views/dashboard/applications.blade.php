@@ -25,7 +25,8 @@ $(function() {
             },
             @role('admin')
             { data: 'avg', name: 'avg',searchable: false},
-            { data: 'interview_avg', name: 'interview_avg',searchable: false}
+            { data: 'interview_avg', name: 'interview_avg',searchable: false},
+            { data: 'total_avg', name: 'total_avg',searchable: false}
             @endrole()
         ],
         "aoColumnDefs": [
@@ -92,7 +93,8 @@ $(function() {
                                     <th>Interview</th>
                                     @role('admin')
                                     <th>Average Rating</th>
-                                    <th>Interview Rating</th>
+                                    <th>Interview</th>
+                                    <th>Total</th>
                                     @endrole()
                                 </tr>
                             </thead>

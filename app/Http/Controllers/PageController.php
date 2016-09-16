@@ -190,9 +190,10 @@ class PageController extends Controller {
             'applications.interview_timeslot',
             'applications.accepted',
             \DB::raw('count(application_ratings.application_id) as ratings'),
-            \DB::raw('AVG(application_ratings.rating) as avg'),
+            \DB::raw('TRUNCATE(AVG(application_ratings.rating),2) as avg'),
             \DB::raw('application_ratings.rating as myrating'),
-            \DB::raw('AVG(interviews.decision) as interview_avg'),
+            \DB::raw('TRUNCATE(AVG(interviews.decision),2) as interview_avg'),
+            \DB::raw('TRUNCATE((AVG(interviews.decision)+AVG(application_ratings.rating))/2, 3) as total_avg'),
         ])->leftJoin('application_ratings','application_ratings.application_id','=','applications.id')
         ->leftJoin('interviews', 'interviews.app_id', '=', 'applications.id')
         ->groupBy('applications.id');
