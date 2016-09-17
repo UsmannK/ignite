@@ -43,7 +43,11 @@
                     @elseif(env('APP_PHASE') == 2)
                         <h2 style="margin-top:0px;">Welcome back, <b>{{Auth::user()->name}}.</b></h2>
                         <hr/>
-                        There's nothing to see here yet.
+                        @if(!Auth::user()->image || !Auth::user()->about)
+                            <div class="alert alert-danger">Please fill out <a href="{{action('PageController@showSettings')}}" class="alert-link">your description</a> and upload a <a href="{{action('PageController@showSettingsPicture')}}" class="alert-link">profile photo.</a></div>
+                            <hr/>
+                        @endif
+                        There's nothing to see here...yet.
                     @endif
                 </div>
             </div>

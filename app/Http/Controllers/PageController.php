@@ -70,11 +70,12 @@ class PageController extends Controller {
         return view('dashboard.dashboard', compact('applications', 'data', 'users'));
     }
     public function index() {
-        \App\Models\Role::with('users')->where('name', 'admin')->get();
-        $mentors = User::with(array('roles' => function($query) {
-            $query->where('name', 'admin');
-        }))
-        ->get(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();
+        //Entrust currently broken, switch to Role:: later
+        $mentors = User::whereHas(
+            'roles', function($q){
+                $q->where('name', 'mentor')->orWhere('name', 'admin');
+            }
+        )->get(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();
         return view('home', compact('mentors'));
     }
     public function calendar() {
@@ -386,5 +387,19 @@ class PageController extends Controller {
                 $applicant->save();
             }
         }
+    }
+    public function showCommunity() {
+        $mentors = User::whereHas(
+            'roles', function($q){
+                $q->where('name', 'mentor')->orWhere('name', 'admin');
+            }
+        )->get(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();
+        $mentees = User::whereHas(
+            'roles', function($q){
+                $q->where('name', 'mentee');
+            }
+        )->get(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();
+
+        return view('dashboard.community', compact('mentors', 'mentees')); 
     }
 }

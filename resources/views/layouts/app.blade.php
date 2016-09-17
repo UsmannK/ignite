@@ -59,6 +59,9 @@
                                 </li>
                             @endif
                         @endrole()
+                        @if(env('APP_PHASE') == 2)
+                            <li><a href="{{action('PageController@showCommunity')}}">Community Members</a></li>
+                        @endif
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">

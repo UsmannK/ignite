@@ -9,6 +9,7 @@ Route::get('/home', function () {return redirect()->action('PageController@dashb
 
 // User Routes
 Route::get('/dashboard', 'PageController@dashboard');
+Route::get('community', 'PageController@showCommunity');
 Route::get('settings', 'PageController@showSettings');
 Route::get('settings/picture', 'PageController@showSettingsPicture');
 Route::post('settings', 'PageController@submitSettings');
