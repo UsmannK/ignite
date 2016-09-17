@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('bottom_js')
+    <style>
+        .social {
+            font-size: 15px;
+        }
+    </style>
     <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
     <script src="{{ asset('js/masonry.pkgd.min.js') }}"></script>
     <script>
@@ -26,6 +31,21 @@
             $("#infoModalLabel").html($(this).data('name'));
             $("#text").html($(this).data('description'));
             $("#image").attr('src', $(this).data('url'));
+            if($(this).data('fb') != '') {
+                $("#fb").html('<i class="fa fa-facebook-official fa-2x" aria-hidden="true"></i> ' + $(this).data('fb'));
+            } else {
+                $("#fb").html('');
+            }
+            if($(this).data('instagram') != '') {
+                $("#instagram").html('<i class="fa fa-instagram fa-2x" aria-hidden="true"></i> ' + $(this).data('instagram'));
+            } else {
+                $("#instagram").html('');
+            }
+            if($(this).data('snapchat') != '') {
+                $("#snapchat").html('<i class="fa fa-snapchat fa-2x" aria-hidden="true"></i> ' + $(this).data('snapchat'));
+            } else {
+                $("#snapchat").html('');
+            }
         });
 </script>
 @stop
@@ -39,7 +59,11 @@
         <h4 class="modal-title" id="infoModalLabel">title</h4>
       </div>
       <div class="modal-body" id="modal-body"> 
-        <img id="image" src="" class="img-responsive" style="margin: 0 auto;">
+        <img id="image" src="" class="img-responsive" style="margin: 0 auto;max-width:400px">
+        <hr/>
+        <div id="fb" class="social"></div>
+        <div id="instagram" class="social"></div>
+        <div id="snapchat" class="social"></div>
         <hr/>
         <div id="text"></div>
         <hr/>
@@ -76,7 +100,7 @@
                                             <div class="caption">
                                                 <h3>{{$mentors[$i]['name']}}</h3>
                                                 <p>{{$mentors[$i]['tagline']}}<p>
-                                                <p><a href="#" class="btn btn-primary readMore" role="button" data-name="{{$mentors[$i]['name']}}" data-url="{{asset('storage/' . $mentors[$i]['image'])}}" data-description="{{$mentors[$i]['about']}}" data-toggle="modal" data-target="#infoModal">Read More</a></p>
+                                                <p><a href="#" class="btn btn-primary readMore" role="button" data-name="{{$mentors[$i]['name']}}" data-url="{{asset('storage/' . $mentors[$i]['image'])}}" data-description="{{$mentors[$i]['about']}}" data-fb="{{$mentors[$i]['fb'] or ''}}" data-instagram="{{$mentors[$i]['instagram'] or ''}}" data-snapchat="{{$mentors[$i]['snapchat'] or ''}}" data-toggle="modal" data-target="#infoModal">Read More</a></p>
                                             </div>
                                         </div>
                                     </div>

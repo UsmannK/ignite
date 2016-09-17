@@ -58,15 +58,40 @@ $(document).ready(function() {
                             <p class="help-block">Not required.</p>
                         </div>
                         <div class="form-group">
-                            <label for="inputFB">Facebook Username</label>
-                            <input type="text" class="form-control" id="inputFB" value="{{Auth::user()->fb}}" name="fb" placeholder="Facebook Username">
-                            <p class="help-block">Not required.</p>
-                        </div>
-                        <div class="form-group">
                             <label for="inputWebsite">Website URL</label>
                             <input type="text" class="form-control" id="inputWebsite" value="{{Auth::user()->website}}" name="website" placeholder="My Portfolio Website">
                             <p class="help-block">Not required.</p>
                         </div>
+                        <hr/>
+                        <h3 style="margin-top:0px;">Social Links <small>(Not required)</small></h3>
+                        <div class="form-group">
+                            <label for="inputFB">Facebook Username</label>
+                            <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-facebook-official" aria-hidden="true"></i></div>
+                                <input type="text" class="form-control" id="inputFB" value="{{Auth::user()->fb}}" name="fb" placeholder="Facebook Username">
+                            </div>
+                            @role(['admin', 'mentor'])
+                                <p class="help-block">Displayed on Ignite homepage.</p>
+                            @endrole
+                            @role(['mentee'])
+                                <p class="help-block">Shown only to other community members.</p>
+                            @endrole
+                            <label for="inputFB">Instgram Username</label>
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-instagram" aria-hidden="true"></i></div>
+                                    <input type="text" class="form-control" id="inputFB" value="{{Auth::user()->instagram}}" name="instagram" placeholder="Instgram Username">
+                             </div>
+                            <p class="help-block">Shown only to other community members.</p>
+              
+                            <label for="inputFB">Snapchat Username</label>
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-snapchat-square" aria-hidden="true"></i></div>
+                                    <input type="text" class="form-control" id="inputFB" value="{{Auth::user()->snapchat}}" name="snapchat" placeholder="Snapchat Username">
+                            </div>
+                            <p class="help-block">Shown only to other community members.</p>
+              
+                        </div>
+                        <hr/>
                         <div class="form-group">
                             <label for="inputAbout">About Me:</label>
                             <textarea class="form-control" id="inputAbout">{{Auth::user()->about}}</textarea>

@@ -226,6 +226,8 @@ class PageController extends Controller {
         $user->tagline = $request->tagline;
         $user->fb = $request->fb;
         $user->github = $request->github;
+        $user->instagram = $request->instagram;
+        $user->snapchat = $request->snapchat;
         $user->website = $request->website;
         $user->about = $request->about;
         if($request->enable_keyboard) {
@@ -393,12 +395,12 @@ class PageController extends Controller {
             'roles', function($q){
                 $q->where('name', 'mentor')->orWhere('name', 'admin');
             }
-        )->get(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();
+        )->get(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about', 'instagram', 'snapchat'])->toArray();
         $mentees = User::whereHas(
             'roles', function($q){
                 $q->where('name', 'mentee');
             }
-        )->get(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();
+        )->get(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about', 'instagram', 'snapchat'])->toArray();
 
         return view('dashboard.community', compact('mentors', 'mentees')); 
     }
