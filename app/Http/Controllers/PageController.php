@@ -9,6 +9,7 @@ use \App\Models\Application;
 use \App\Models\ApplicationRating;
 use \App\Models\InterviewSlot;
 use \App\Models\Interview;
+use \App\Models\User;
 use Auth;
 use DB;
 use Carbon\Carbon;
@@ -62,14 +63,18 @@ class PageController extends Controller {
     */
     public function dashboard() {
         $applications = Application::count();
-        $users = \App\Models\User::with('ratings')->get()->sortBy(function($users) {
+        $users = User::with('ratings')->get()->sortBy(function($users) {
             return $users->ratings->count();
         });
         $data['count'] = Auth::user()->ratings->count();
         return view('dashboard.dashboard', compact('applications', 'data', 'users'));
     }
     public function index() {
-        $mentors = \App\Models\User::all(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();
+        \App\Models\Role::with('users')->where('name', 'admin')->get();
+        $mentors = User::with(array('roles' => function($query) {
+            $query->where('name', 'admin');
+        }))
+        ->get(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about'])->toArray();
         return view('home', compact('mentors'));
     }
     public function calendar() {
@@ -306,7 +311,7 @@ class PageController extends Controller {
     }
     public function showAllInterviews() {
         $interviews = InterviewSlot::orderBy('start_time', 'asc')->get();
-        $mentors = \App\Models\User::get(array('id', 'name'))->toArray();
+        $mentors = User::get(array('id', 'name'))->toArray();
         return view('dashboard.interview_view', compact('interviews', 'mentors'));
     }
     public function submitTimeslot(Request $request) {

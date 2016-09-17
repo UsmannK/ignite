@@ -67,7 +67,12 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
-        $user->attachRole(\App\Models\Role::where('name','mentor')->first());
+        if(env('APP_PHASE') == 1) {
+            $user->attachRole(\App\Models\Role::where('name','mentor')->first());
+        } elseif(env('APP_PHASE') == 2) {
+            $user->attachRole(\App\Models\Role::where('name','mentee')->first());
+        }
+
         return $user;
     }
     // public function showRegistrationForm() {

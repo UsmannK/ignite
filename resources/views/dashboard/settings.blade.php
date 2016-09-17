@@ -50,6 +50,7 @@ $(document).ready(function() {
                         <div class="form-group">
                             <label for="inputTagline">Tagline</label>
                             <input type="text" class="form-control" id="inputTagline" value="{{Auth::user()->tagline}}" name="tagline" placeholder="Tagline">
+                            <p class="help-block">A very short description of you</p>
                         </div>
                         <div class="form-group">
                             <label for="inputGithub">Github Username</label>
@@ -71,12 +72,16 @@ $(document).ready(function() {
                             <textarea class="form-control" id="inputAbout">{{Auth::user()->about}}</textarea>
                             <p class="help-block">Introduce yourself, list organizations you're involved with, etc.</p>
                         </div>
-                        <hr/>
-                        <div class="checkbox">
-                            <label>
-                                <input name="enable_keyboard" type="checkbox" {{(Auth::user()->enable_keyboard) ? 'checked' : ''}}> Enable keyboard control for Rating
-                            </label>
-                        </div>
+                        @if(env('APP_PHASE') == 1)
+                            @role(['admin', 'mentor'])
+                                <hr/>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="enable_keyboard" type="checkbox" {{(Auth::user()->enable_keyboard) ? 'checked' : ''}}> Enable keyboard control for Rating
+                                    </label>
+                                </div>
+                            @endrole
+                        @endif
                         <hr/>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
