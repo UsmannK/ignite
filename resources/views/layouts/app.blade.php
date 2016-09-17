@@ -44,17 +44,21 @@
                 @else
                     <ul class="nav navbar-nav">
                         <li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ url('/rate') }}">Rate</a></li>
-                        <li><a href="{{ url('/applications') }}">Applications</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Interview<span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                @role('admin')
-                                <li><a href="{{action('PageController@showCreateInterview')}}">Create interview time</a></li>
-                                @endrole()
-                                <li><a href="{{action('PageController@showAllInterviews')}}">View interviews</a></li>
-                            </ul>
-                        </li>
+                        @role(['admin', 'mentor'])
+                            @if(env('APP_PHASE') == 1 || Auth::user()->hasRole('admin'))
+                                <li><a href="{{action('PageController@showRate')}}">Rate</a></li>
+                                <li><a href="{{action('PageController@showApplications')}}">Applications</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Interview<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        @role('admin')
+                                        <li><a href="{{action('PageController@showCreateInterview')}}">Create interview time</a></li>
+                                        @endrole()
+                                        <li><a href="{{action('PageController@showAllInterviews')}}">View interviews</a></li>
+                                    </ul>
+                                </li>
+                            @endif
+                        @endrole()
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -62,8 +66,8 @@
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/settings') }}"><i class="fa fa-btn fa-cogs"></i>Settings</a></li>
-                                <li><a href="{{ url('/settings/picture') }}"><i class="fa fa-btn fa-camera"></i>Profile Picture</a></li>
+                                <li><a href="{{action('PageController@showSettings')}}"><i class="fa fa-btn fa-cogs"></i>Settings</a></li>
+                                <li><a href="{{action('PageController@showSettingsPicture')}}"><i class="fa fa-btn fa-camera"></i>Profile Picture</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>

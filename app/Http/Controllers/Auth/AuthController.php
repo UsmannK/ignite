@@ -70,9 +70,9 @@ class AuthController extends Controller
         $user->attachRole(\App\Models\Role::where('name','mentor')->first());
         return $user;
     }
-    public function showRegistrationForm() {
-        return redirect('login');
-    }
-    public function register() {
-    }
+    // public function showRegistrationForm() {
+    //     return redirect('login');
+    // }
+    // public function register() {
+    // }
 }
