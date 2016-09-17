@@ -101,6 +101,16 @@
                                                 <h3>{{$mentors[$i]['name']}}</h3>
                                                 <p>{{$mentors[$i]['tagline']}}<p>
                                                 <p><a href="#" class="btn btn-primary readMore" role="button" data-name="{{$mentors[$i]['name']}}" data-url="{{asset('storage/' . $mentors[$i]['image'])}}" data-description="{{$mentors[$i]['about']}}" data-fb="{{$mentors[$i]['fb'] or ''}}" data-instagram="{{$mentors[$i]['instagram'] or ''}}" data-snapchat="{{$mentors[$i]['snapchat'] or ''}}" data-toggle="modal" data-target="#infoModal">Read More</a></p>
+                                                <hr/>
+                                                 @if($mentors[$i]['fb'])
+                                                <i class="fa fa-facebook-official" aria-hidden="true"></i> {{$mentors[$i]['fb']}}
+                                               @endif
+                                               @if($mentors[$i]['instagram'])
+                                               &nbsp;|&nbsp;&nbsp;<i class="fa fa-instagram" aria-hidden="true"></i> {{$mentors[$i]['instagram']}}
+                                               @endif
+                                                @if($mentors[$i]['snapchat'])
+                                                &nbsp;|&nbsp;&nbsp;<i class="fa fa-snapchat" aria-hidden="true"></i> {{$mentors[$i]['snapchat']}}
+                                               @endif
                                             </div>
                                         </div>
                                     </div>
@@ -121,7 +131,17 @@
                                             <div class="caption">
                                                 <h3>{{$mentees[$i]['name']}}</h3>
                                                 <p>{{$mentees[$i]['tagline']}}<p>
-                                                <p><a href="#" class="btn btn-primary readMore" role="button" data-name="{{$mentees[$i]['name']}}" data-url="{{asset('storage/' . $mentees[$i]['image'])}}" data-description="{{$mentees[$i]['about']}}" data-toggle="modal" data-target="#infoModal">Read More</a></p>
+                                                <p><a href="#" class="btn btn-primary readMore" role="button" data-name="{{$mentees[$i]['name']}}" data-url="{{asset('storage/' . $mentees[$i]['image'])}}" data-description="{{$mentees[$i]['about']}}" data-fb="{{$mentees[$i]['fb'] or ''}}" data-instagram="{{$mentees[$i]['instagram'] or ''}}" data-snapchat="{{$mentees[$i]['snapchat'] or ''}}" data-toggle="modal" data-target="#infoModal">Read More</a></p>
+                                                <hr/>
+                                                 @if($mentees[$i]['fb'])
+                                                <i class="fa fa-facebook-official" aria-hidden="true"></i> {{$mentees[$i]['fb']}}
+                                               @endif
+                                               @if($mentees[$i]['instagram'])
+                                               &nbsp;|&nbsp;&nbsp;<i class="fa fa-instagram" aria-hidden="true"></i> {{$mentees[$i]['instagram']}}
+                                               @endif
+                                                @if($mentees[$i]['snapchat'])
+                                                &nbsp;|&nbsp;&nbsp;<i class="fa fa-snapchat" aria-hidden="true"></i> {{$mentees[$i]['snapchat']}}
+                                               @endif
                                             </div>
                                         </div>
                                     </div>
