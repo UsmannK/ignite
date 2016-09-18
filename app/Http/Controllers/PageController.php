@@ -401,7 +401,8 @@ class PageController extends Controller {
                 $q->where('name', 'mentee');
             }
         )->get(['name', 'tagline', 'image', 'fb', 'website', 'github', 'about', 'instagram', 'snapchat'])->toArray();
-
+        shuffle($mentors);
+        shuffle($mentees);
         return view('dashboard.community', compact('mentors', 'mentees')); 
     }
 }
